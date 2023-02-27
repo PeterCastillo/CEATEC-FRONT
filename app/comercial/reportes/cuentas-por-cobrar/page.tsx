@@ -1,8 +1,5 @@
 "use client";
 import { CuentasPorCobrar } from "@/components/comercial/reportes/cuentas-por-cobrar/CuentasPorCobrar";
-import { CuentasPorPagar } from "@/components/comercial/reportes/cuentas-por-pagar/CuentasPorPagar";
-import { ListadoProductos } from "@/components/comercial/reportes/listado-productos/ListadoProductos";
-import { ReporteVentasForm } from "@/components/comercial/reportes/reporte-ventas/ReporteVentaForm";
 import { Alert } from "@/components/commons/alert/Alert";
 import { Loader } from "@/components/commons/loader/Loader";
 import { IAlert } from "@/interfaces/componentsInterfaces";

@@ -1,13 +1,11 @@
 "use client";
 import { ListadoDeProveedor } from "@/components/comercial/reportes/listado-de-proveedor/ListadoProveedores";
-import { ListadoProductos } from "@/components/comercial/reportes/listado-productos/ListadoProductos";
-import { ReporteVentasForm } from "@/components/comercial/reportes/reporte-ventas/ReporteVentaForm";
 import { Alert } from "@/components/commons/alert/Alert";
 import { Loader } from "@/components/commons/loader/Loader";
 import { IAlert } from "@/interfaces/componentsInterfaces";
 import styles from "@/styles/Header.module.scss";
 import { useState, useEffect } from "react";
-import { FaPlus, FaTrash } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 
 export default function Home() {
   const [showLoader, setShowLoader] = useState(false);

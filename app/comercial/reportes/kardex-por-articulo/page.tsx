@@ -1,7 +1,5 @@
 "use client";
 import { KardexPorArticulo } from "@/components/comercial/reportes/kardex-por-articulo/KardexPorArticuloForm";
-import { ReporteCompra } from "@/components/comercial/reportes/reporte-compras/ReporteCompra";
-import { ReporteComprasForm } from "@/components/comercial/reportes/reporte-compras/ReporteComprasForm";
 import { Alert } from "@/components/commons/alert/Alert";
 import { Loader } from "@/components/commons/loader/Loader";
 import { IArticle } from "@/interfaces/comercial/mantenimiento/articulo/articulosInterfaces";
@@ -13,7 +11,7 @@ import { IBrand } from "@/interfaces/comercial/mantenimiento/grupo-familia-marca
 import { IAlert } from "@/interfaces/componentsInterfaces";
 import styles from "@/styles/Header.module.scss";
 import { useState, useEffect } from "react";
-import { FaPlus, FaTrash } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 
 export default function Home() {
   const [step, setStep] = useState(1);
