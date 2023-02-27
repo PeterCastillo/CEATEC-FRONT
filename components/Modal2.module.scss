@@ -1,0 +1,30 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 40px;
+  z-index: 1;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+
+  &.hidden {
+    display: none;
+  }
+
+  .container {
+    height: 800px;
+    width: 700px;
+    border: 1px solid #000;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px;
+    }
+  }
+}

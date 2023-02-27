@@ -1,0 +1,109 @@
+.form {
+  max-width: 700px;
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.form_special {
+  max-width: 700px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.row_special_reportes {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  .reporte_info {
+    label,
+    span {
+      font-size: 0.9rem;
+      color: black;
+    }
+  }
+  .reporte_datos {
+    display: flex;
+    gap: 1rem;
+    input {
+      color: black;
+      border: 1px solid black;
+      border-radius: 5px;
+      padding: 5px 15px;
+      outline: none;
+      font-size: 0.8rem;
+    }
+    :first-child {
+      flex-grow: 1;
+      width: 100%;
+    }
+    :last-child {
+      max-width: 4rem;
+    }
+    @media screen and (max-width: 750px) {
+      max-width: none;
+      flex-grow: 1;
+    }
+  }
+}
+.nro_items {
+  max-width: 26.8rem;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.7rem;
+  color: black;
+  @media screen and (max-width: 750px) {
+    max-width: 100%;
+  }
+}
+.pedido_especial_group {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  div {
+    min-width: 12rem;
+    display: flex;
+    justify-content: space-between;
+    label,
+    span {
+      font-size: 0.9rem;
+      color: black;
+    }
+  }
+  input {
+    width: 100%;
+    max-width: 14.8rem;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px 15px;
+    outline: none;
+    font-size: 0.8rem;
+    @media screen and (max-width: 750px) {
+      max-width: 100%;
+    }
+  }
+}
+
+.inputs_group_colums {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    div {
+      flex: 1;
+      label {
+        font-size: 0.9rem;
+        color: black;
+        white-space: nowrap;
+      }
+      input {
+        width: 100%;
+        color: black;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 5px 15px;
+        outline: none;
+        font-size: 0.8rem;
+      }
+    }
+  }

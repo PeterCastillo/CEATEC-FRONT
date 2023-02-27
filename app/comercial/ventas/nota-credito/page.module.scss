@@ -1,0 +1,240 @@
+.header {
+  height: 100px;
+  background-color: #e0e0e0;
+  padding: 20px 20px 0 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+
+    .title {  
+      display: block;
+      color: rgb(58, 58, 58);
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-right: auto;
+    }
+
+    .option,
+    .create,
+    .delete {
+      margin-left: 8px;
+      padding: 4px 10px;
+      border-radius: 5px;
+      outline: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .option {
+      background-color: #fff;
+      color: rgb(58, 58, 58);
+      border: 1px solid #959ba7;
+    }
+    .option {
+      background-color: #fff;
+      color: rgb(58, 58, 58);
+      border: 1px solid #959ba7;
+    }
+    .delete {
+      color: #fff;
+      background-color: rgb(228, 49, 49);
+      border: 1px solid rgb(117, 15, 15);
+    }
+    .create {
+      background-color: #01cb62;
+      border: 1px solid #178860;
+      color: #fff;
+    }
+    .create {
+      background-color: #01cb62;
+      border: 1px solid #178860;
+      color: #fff;
+    }
+  }
+
+  .foot {
+    display: flex;
+    column-gap: 20px;
+    button {
+      border: none;
+      background-color: transparent;
+      outline: none;
+      color: gray;
+      font-size: 0.9rem;
+      padding: 4px 0;
+      cursor: pointer;
+      &.active {
+        color: #000;
+        border-bottom: 2px solid #01cb62;
+      }
+    }
+  }
+}
+
+.parametros {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  color: #000;
+  position: relative;
+}
+
+.ventas {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  color: #000;
+  position: relative;
+  .contenedor {
+    max-width: 1000px;
+    width: 100%;
+    .ventas_header,
+    .ventas_footer {
+      .row {
+        display: flex;
+        column-gap: 10px;
+        margin-bottom: 10px;
+        .f_g {
+          position: relative;
+          label,
+          input,
+          select {
+            width: 100%;
+          }
+          label {
+            font-size: 0.9rem;
+          }
+          input,
+          select {
+            border: 1px solid #000;
+            border-radius: 5px;
+            outline: none;
+            height: 25px;
+            background-color: #fff;
+            color: #000;
+          }
+          input {
+            padding: 0 5px;
+          }
+          span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 15px;
+            width: 25px;
+            border: 1px solid #000;
+            position: absolute;
+            right: 5px;
+            bottom: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+        }
+        .igv {
+          position: relative;
+          width: 100%;
+          .incluir_igv,
+          .deducir_igv {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            input {
+              width: 13px;
+              height: 13px;
+              margin-right: 10px;
+            }
+          }
+        }
+        .f_1 {
+          flex: 1;
+        }
+        .f_6 {
+          flex: 6;
+        }
+        .f_2 {
+          flex: 2;
+        }
+        .f_4 {
+          flex: 4;
+        }
+        .f_3 {
+          flex: 3;
+        }
+        .f_8 {
+          flex: 8;
+        }
+      }
+    }
+  }
+}
+
+.datatable {
+  max-width: 1000px;
+  width: 100%;
+  margin: auto;
+}
+
+.table {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    th,
+    td {
+      border: 1px solid #000;
+    }
+    thead {
+      .item {
+        width: 50px;
+      }
+      .number {
+        width: 70px;
+      }
+      .unidad {
+        width: 120px;
+      }
+    }
+    tbody {
+      .number {
+        max-width: 70px;
+      }
+      input {
+        border: none;
+        outline: none;
+        width: 100%;
+        height: 100%;
+      }
+      td {
+        padding: 2px 5px;
+        height: 25px;
+        position: relative;
+        span {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 15px;
+          width: 25px;
+          border: 1px solid #000;
+          position: absolute;
+          right: 5px;
+          bottom: 5px;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+      }
+      .trash {
+        color: rgb(228, 49, 49);
+        cursor: pointer;
+      }
+    }
+  }
+  .center_item {
+    text-align: center;
+  }
+}

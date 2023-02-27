@@ -1,0 +1,105 @@
+.select_articulo {
+  width: 100%;
+  position: relative;
+  .buscador {
+    display: flex;
+    flex-direction: column;
+    div {
+      width: 100%;
+      position: relative;
+      .delete {
+        display: inline-block;
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: black;
+        cursor: pointer;
+        font-size: 0.9rem;
+      }
+      .search {
+        position: absolute;
+        height: 100%;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        width: 30px;
+        justify-content: center;
+        color: black;
+        font-size: 0.9rem;
+      }
+      .input {
+        width: 100%;
+        color: black;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 5px 15px;
+        outline: none;
+        font-size: 0.8rem;
+        padding-left: 25px;
+        height: 25px;
+      }
+    }
+  }
+  .art_container {
+    max-height: 3rem;
+    overflow-y: auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: white;
+    z-index: 1;
+    width: 100%;
+    .art {
+      min-height: 1.5rem;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      padding-left: 30px;
+      color: black;
+      cursor: pointer;
+      box-sizing: border-box;
+      position: relative;
+      &:hover {
+        background-color: #ebf0fa;
+      }
+      .icon {
+        position: absolute;
+        left: 0;
+        width: 30px;
+        text-align: center;
+        font-size: 0.8rem;
+      }
+    }
+  }
+  .create {
+    width: 100%;
+    background-color: #01cb62;
+    border: solid 1px #178860;
+    border-radius: 5px;
+    color: white;
+    padding: 0.15rem 0rem;
+    cursor: pointer;
+    top: 310%;
+    z-index: 1;
+    &:hover {
+      background-color: #178860;
+    }
+  }
+}
+
+.dropDownContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  width: 100%;
+  position: absolute;
+  top: 110%;
+}

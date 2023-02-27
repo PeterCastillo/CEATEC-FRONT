@@ -1,0 +1,95 @@
+$success-color: #00a28e;
+$info-color: #5e5adb;
+$warning-color: #ed6f00;
+$error-color: #ff5631;
+
+.alert {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  max-width: 460px;
+  width: 100%;
+  padding: 15px;
+  font-weight: 500;
+  background-color: #0f0d1e;
+  background-color: #fff;
+  border: 1px solid #5e5adb;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  z-index: 2;
+  display: flex;
+  &.success {
+    .icon {
+      svg {
+        color: $success-color;
+      }
+    }
+    .description {
+      span {
+        color: $success-color;
+      }
+    }
+  }
+  &.info {
+    .icon {
+      svg {
+        color: $info-color;
+      }
+    }
+    .description {
+      span {
+        color: $info-color;
+      }
+    }
+  }
+  &.warning {
+    .icon {
+      svg {
+        color: $warning-color;
+      }
+    }
+    .description {
+      span {
+        color: $warning-color;
+      }
+    }
+  }
+  &.error {
+    .icon {
+      svg {
+        color: $error-color;
+      }
+    }
+    .description {
+      span {
+        color: $error-color;
+      }
+    }
+  }
+  &.hidden {
+    display: none;
+  }
+  .icon {
+    width: 35px;
+    svg {
+      font-size: 1.2rem;
+    }
+  }
+  .description {
+    flex: 1;
+    span {
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+    p {
+      margin: 5px 0;
+      color: #686868;
+      font-size: 15px;
+    }
+  }
+  @media screen and (max-width: 500px) {
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    width: auto;
+  }
+}

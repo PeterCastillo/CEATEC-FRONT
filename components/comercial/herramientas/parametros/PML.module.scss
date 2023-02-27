@@ -1,0 +1,24 @@
+.form {
+  max-width: 700px;
+  width: 100%;
+  .f_g {
+    position: relative;
+    input,
+    select {
+      width: 100%;
+      padding: 0 10px;
+    }
+    label {
+      font-size: 0.9rem;
+    }
+    input,
+    select {
+      border: 1px solid #000;
+      border-radius: 5px;
+      outline: none;
+      height: 25px;
+      background-color: #fff;
+      color: #000;
+    }
+  }
+}

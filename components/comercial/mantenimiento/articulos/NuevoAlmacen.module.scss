@@ -1,0 +1,108 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 40px;
+    z-index: 1;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+  align-items: center;
+    &.hidden {
+      display: none;
+    }
+  
+    .container {
+      width: 500px;
+      height: fit-content;
+      border: 1px solid #000;
+      background-color: #fff;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 30px;
+        padding: 0 5px;
+        .title {
+          font-weight: 500;
+        }
+        .close {
+          height: 30px;
+          width: 30px;
+          border: none;
+          outline: none;
+          background-color: transparent;
+          cursor: pointer;
+          &:hover {
+            background-color: #f4f7fc;
+          }
+        }
+      }
+  
+      .options {
+        height: 30px;
+        background-color: #f4f7fc;
+        display: flex;
+        align-items: center;
+        padding: 0 5px;
+        .option {
+          border: none;
+          outline: none;
+          height: 30px;
+          width: 30px;
+          background-color: transparent;
+          cursor: pointer;
+          &:hover {
+            background-color: #ebf0fa;
+          }
+        }
+        .add {
+          margin-left: auto;
+          background-color: #01cb62;
+          color: #fff;
+          height: 20px;
+          border: 1px solid #178860;
+          outline: none;
+          padding: 0 15px;
+          border-radius: 5px;
+          cursor: pointer;
+          &:hover {
+            background-color: #178860;
+          }
+        }
+      }
+      
+      .form {
+        width: 100%;
+        padding: 10px;
+        .f_g {
+          position: relative;
+          label,
+          input,
+          select {
+            width: 100%;
+          }
+          label {
+            font-size: 0.9rem;
+          }
+          input,
+          select {
+            border: 1px solid #000;
+            border-radius: 5px;
+            outline: none;
+            height: 25px;
+            background-color: #fff;
+            color: #000;
+          }
+          .padding {
+            padding: 0 5px;
+          }
+        }
+      }
+    }
+  }
+  

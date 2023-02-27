@@ -1,0 +1,117 @@
+.header {
+  height: 100px;
+  background-color: #e0e0e0;
+  padding: 20px 20px 0 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .head {
+    display: flex;
+    justify-content: space-between;
+    @media screen and (max-width: 500px) {
+      overflow-x: auto;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+    }
+    .title {
+      display: block;
+      color: rgb(58, 58, 58);
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-right: auto;
+      white-space: nowrap;
+    }
+    .option,
+    .create,
+    .delete {
+      margin-left: 8px;
+      white-space: nowrap;
+      height: 27px;
+      padding: 0px 10px;
+      border-radius: 5px;
+      outline: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .option {
+      background-color: #fff;
+      color: rgb(58, 58, 58);
+      border: 1px solid #959ba7;
+    }
+    .delete {
+      color: #fff;
+      background-color: rgb(228, 49, 49);
+      border: 1px solid rgb(117, 15, 15);
+    }
+    .create {
+      background-color: #01cb62;
+      border: 1px solid #178860;
+      color: #fff;
+    }
+  }
+
+  .foot {
+    display: flex;
+    column-gap: 20px;
+    overflow-x: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    button {
+      border: none;
+      background-color: transparent;
+      outline: none;
+      color: gray;
+      font-size: 0.9rem;
+      padding: 4px 0;
+      white-space: nowrap;
+      cursor: pointer;
+      &.active {
+        color: #000;
+        border-bottom: 2px solid #01cb62;
+      }
+    }
+  }
+}
+
+.contenedor {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  color: #000;
+  position: relative;
+  .form {
+    max-width: 700px;
+    width: 100%;
+  }
+  .datatable {
+    max-width: 1000px;
+    width: 100%;
+    overflow-x: auto;
+    &::-webkit-scrollbar {
+      appearance: none;
+    }
+    &::-webkit-scrollbar:vertical {
+      width: 10px;
+    }
+    &::-webkit-scrollbar-button:increment,
+    &::-webkit-scrollbar-button {
+      display: none;
+    }
+    &::-webkit-scrollbar:horizontal {
+      height: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(9, 10, 24, 0.3);
+      border-radius: 20px;
+      border: 2px solid #f1f2f3;
+    }
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+    }
+  }
+}

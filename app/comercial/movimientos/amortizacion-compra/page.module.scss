@@ -1,0 +1,245 @@
+.header {
+  height: 100px;
+  background-color: #e0e0e0;
+  padding: 20px 20px 0 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+
+    .title {
+      display: block;
+      color: rgb(58, 58, 58);
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-right: auto;
+    }
+
+    .option,
+    .create,
+    .delete {
+      margin-left: 8px;
+      padding: 4px 10px;
+      border-radius: 5px;
+      outline: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .option {
+      background-color: #fff;
+      color: rgb(58, 58, 58);
+      border: 1px solid #959ba7;
+    }
+    .delete {
+      color: #fff;
+      background-color: rgb(228, 49, 49);
+      border: 1px solid rgb(117, 15, 15);
+    }
+    .create {
+      background-color: #01cb62;
+      border: 1px solid #178860;
+      color: #fff;
+    }
+  }
+
+  .foot {
+    display: flex;
+    column-gap: 20px;
+    button {
+      border: none;
+      background-color: transparent;
+      outline: none;
+      color: gray;
+      font-size: 0.9rem;
+      padding: 4px 0;
+      cursor: pointer;
+      &.active {
+        color: #000;
+        border-bottom: 2px solid #01cb62;
+      }
+    }
+  }
+}
+
+.contenedor {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  color: #000;
+  position: relative;
+  .form {
+    max-width: 1000px;
+    width: 100%;
+  }
+  .datatable {
+    max-width: 1000px;
+    width: 100%;
+  }
+}
+
+  
+  .amortizar_compras {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0rem;
+    span {
+      font-weight: 600;
+      display: inline-block;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+    button {
+      border: none;
+      padding: 7px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background-color: rgb(18, 184, 101);
+      color: white;
+    }
+  }
+  
+  .filter {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 1rem;
+    .filter_name {
+      position: relative;
+      span {
+        position: absolute;
+        height: 100%;
+        left: 0;
+        top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+      }
+      input {
+        color: #082a5a;
+        border: 1px solid #eaeef7;
+        border-radius: 5px;
+        outline: none;
+        padding: 5px 15px;
+        font-size: 0.8rem;
+        resize: none;
+        height: 32px;
+        padding: 0 10px;
+        border: 1px solid #bcc2ce;
+        padding-left: 40px;
+        width: 100%;
+      }
+    }
+  }
+  
+  .row_input {
+    display: flex;
+    gap: 0.5rem;
+    input,
+    textarea {
+      flex-grow: 1;
+      resize: none;
+    }
+  }
+  .min_height {
+    min-height: 3rem;
+  }
+  .column_input {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    row-gap: 0.3rem;
+    select,input {
+      width: 100%;
+    }
+  }
+  
+  .input_group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    div {
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-basis: 0;
+    }
+  }
+  .form_secction {
+    width: 100%;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+  .amortizar {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+    button {
+      border: none;
+      padding: 7px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background-color: rgb(18, 184, 101);
+      color: white;
+    }
+  }
+  .secction {
+    label {
+      font-size: 0.9rem;
+    }
+    input, select, textarea {
+      color: #082a5a;
+      border: 1px solid #000;
+      border-radius: 5px;
+      outline: none;
+      height: 25px;
+      background-color: #fff;
+      color: #000;
+    }
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+  }
+  .min_with {
+    min-width: 8.5rem;
+  }
+  
+  .footer_amortizar {
+    margin-top: 1rem;
+    label {
+      font-size: 0.9rem;
+    }
+    input, select, textarea {
+      color: #082a5a;
+      border: 1px solid #000;
+      border-radius: 5px;
+      outline: none;
+      height: 25px;
+      background-color: #fff;
+      color: #000;
+    }
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+    div {
+      display: flex;
+      flex-direction: column;
+    }
+  }
