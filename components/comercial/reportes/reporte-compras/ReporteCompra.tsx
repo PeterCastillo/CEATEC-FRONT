@@ -45,7 +45,7 @@ export const ReporteCompra = ({
             </tr>
           )}
           {contado.map((item) => (
-            <tr>
+            <tr key={item._id.$oid}>
               <td>C</td>
               <td>{item.documento_compra}</td>
               <td>{item.proveedor_ruc}</td>
@@ -109,7 +109,7 @@ export const ReporteCompra = ({
             </tr>
           )}
           {credito.map((item) => (
-            <tr>
+            <tr key={item._id.$oid}>
               <td>C</td>
               <td>{item.documento_compra}</td>
               <td>{item.proveedor_ruc}</td>

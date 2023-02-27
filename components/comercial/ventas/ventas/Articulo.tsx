@@ -462,6 +462,7 @@ export const Articulo = ({
                         unidad_valor: precio.unidad_valor.toString()
                       })
                     }
+                    key={precio.precio_1.toString().concat(precio.precio_2,precio.precio_5,precio.precio_1)}
                   >
                     <td>{precio.unidad_descripcion}</td>
                     <td
