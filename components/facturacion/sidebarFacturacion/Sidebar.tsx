@@ -33,10 +33,10 @@ export const Sidebar: FC<ISidebar> = ({ show, handleShowSidebar }) => {
   const isPathActive = (route: string) => {
     if (pathName) {
       if (pathName.includes(route)) {
-        return style.active;
+        return style.active
       }
     }
-  };
+  }
 
   const handleShowListOptions = (name: string) => {
     if (showListOptions === name) {
@@ -61,7 +61,7 @@ export const Sidebar: FC<ISidebar> = ({ show, handleShowSidebar }) => {
                 <li
                   className={clsx(
                     style.nav_item,
-                    showListOptions == data.name && style.nav_item_activate
+                    isPathActive(data.name)
                   )}
                   onClick={() => handleShowListOptions(data.name)}
                   key={data.name}
