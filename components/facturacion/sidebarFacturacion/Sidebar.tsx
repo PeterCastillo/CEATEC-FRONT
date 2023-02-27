@@ -71,7 +71,8 @@ export const Sidebar: FC<ISidebar> = ({ show, handleShowSidebar }) => {
                   <li
                     className={clsx(
                       style.nav_item,
-                      showListOptions == data.name && style.nav_item_activate
+                      showListOptions == data.name && style.nav_item_activate,
+                      style.active
                     )}
                     onClick={() => handleShowListOptions(data.name)}
                     key={data.name}
