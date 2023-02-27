@@ -2,7 +2,6 @@ import React, { FC, useRef, useState } from "react";
 import Image from "next/image";
 import { clsx } from "@/lib/clsx";
 import style from "./Sidebar.module.scss";
-import { IoIosArrowDown } from "react-icons/io";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { sidebarFacturacionOptions } from "@/utils/sidebarFacturacionOptions";
@@ -71,7 +70,7 @@ export const Sidebar: FC<ISidebar> = ({ show, handleShowSidebar }) => {
                   <li
                     className={clsx(
                       style.nav_item,
-                      showListOptions == data.name && style.nav_item_activate,
+                      isPathActive(data.name)
                       
                     )}
                     onClick={() => handleShowListOptions(data.name)}
