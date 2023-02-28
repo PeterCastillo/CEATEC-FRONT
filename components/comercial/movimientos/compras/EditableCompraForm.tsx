@@ -5,7 +5,7 @@ import { ICompra } from "@/interfaces/comercial/movimientos/comprasIntefaces";
 import { clsx } from "@/lib/clsx";
 import { FC, FormEvent, useEffect, useState } from "react";
 import { Articulo } from "./Articulo";
-import { IArticle } from "../../../../interfaces/comercial/mantenimiento/articulo/articulosInterfaces";
+import { IArticle, IArticlePrecios } from "../../../../interfaces/comercial/mantenimiento/articulo/articulosInterfaces";
 import { IWareHouse } from "@/interfaces/comercial/mantenimiento/empresa/almacenInterfaces";
 import { IClientProvider } from "@/interfaces/comercial/mantenimiento/cliente-proveedor/proveedorClientInterfaces";
 import { IAlert } from "@/interfaces/componentsInterfaces";
@@ -636,6 +636,23 @@ export const ECF: FC<IEFC> = ({
     }
   };
 
+  const handleCreateSetNewUnidad = (newPrecio: IArticlePrecios) => {
+    const id = Number(index)
+    setNewEditableCompra({
+      ...newEditableCompra,
+      articulos: newEditableCompra.articulos.map((item, index) =>
+        index == id
+          ? {
+              ...item,
+              unidad_abreviatura: newPrecio.unidad_abreviatura,
+              unidad_descripcion: newPrecio.unidad_descripcion,
+              unidad_valor: newPrecio.unidad_valor
+            }
+          : item
+      ),
+    });
+  };
+
   const handleDocumentoCompra = () => {
     if (newEditableCompra.documento_compra.includes("-")) {
       const newCorrelativo = "0"
@@ -1159,6 +1176,7 @@ export const ECF: FC<IEFC> = ({
           index={index}
           getArticlesList={getArticlesList}
           handleChangeUnidad={handleChangeUnidad}
+          handleCreateSetNewUnidad={handleCreateSetNewUnidad}
         />
       </div>
     </div>
