@@ -28,6 +28,7 @@ export const Precio = ({
   setShowAlert,
   setShowLoader,
   showAlert,
+  handleCreateSetNewUnidad,
 }: {
   show: boolean;
   setShowModal: (state: boolean) => void;
@@ -38,12 +39,16 @@ export const Precio = ({
   precioState: IArticlePrecios;
   setPrecioState: (precio: IArticlePrecios) => void;
   unidades: IUnit[];
-  handleUpdateArticle: (article: IArticle) => void;
+  handleUpdateArticle: (
+    article: IArticle,
+    handleCreateSetNewUnidad?: () => void
+  ) => void;
   closeAlertTimeOut: () => void;
   getUnitsList: () => void;
   setShowAlert: (state: IAlert) => void;
   setShowLoader: (state: boolean) => void;
   showAlert: IAlert;
+  handleCreateSetNewUnidad: (newPrecio: IArticlePrecios) => void;
 }) => {
   const [modalUnidad, setModalUnidad] = useState(false);
   const [porcentajes, setPorcentajes] = useState({
@@ -199,7 +204,7 @@ export const Precio = ({
         return closeAlertTimeOut();
       }
       setNewEditableArticulo(unidad);
-      handleUpdateArticle(unidad)
+      handleUpdateArticle(unidad);
       setPrecioActual({
         id: "",
       });
@@ -247,7 +252,7 @@ export const Precio = ({
         return closeAlertTimeOut();
       }
       setNewEditableArticulo(unidad);
-      handleUpdateArticle(unidad);
+      handleUpdateArticle(unidad, () => handleCreateSetNewUnidad(precioState));
       setPrecioActual({
         id: "",
       });

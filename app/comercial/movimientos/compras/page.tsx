@@ -324,7 +324,7 @@ export default function Home() {
     }
   };
 
-  const getArticlesList = async () => {
+  const getArticlesList = async (handleUpdateArticle = Function()) => {
     setShowLoader(true);
     const response = await getListaArticulosService(
       getLocalStorageItem("empresa"),
@@ -333,11 +333,12 @@ export default function Home() {
     setShowLoader(false);
     if (response) {
       if (response.status == 200) {
-        console.log(1)
         setArticulos(response.json.data);
+        handleUpdateArticle()
       }
     }
   };
+
   const getUnidadesList = async () => {
     setShowLoader(true);
     const unidades = await getListaUnidadService(

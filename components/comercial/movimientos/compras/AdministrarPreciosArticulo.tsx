@@ -29,7 +29,8 @@ export const ADMPA = ({
   getUnitsList,
   index,
   getArticlesList,
-  handleChangeUnidad
+  handleChangeUnidad,
+  handleCreateSetNewUnidad,
 }: {
   show: boolean;
   setShowNewClientModal: (data: boolean) => void;
@@ -42,8 +43,9 @@ export const ADMPA = ({
   articulos: IArticle[];
   getUnitsList: () => void;
   index: string
-  getArticlesList: () => void
+  getArticlesList: (handleCreateSetNewUnidad?: () => void) => void
   handleChangeUnidad: (value: string, id: number) => void
+  handleCreateSetNewUnidad: (newPrecio: IArticlePrecios) => void
 }) => {
   const [articulo, setArticle] = useState<IArticle>({
     _id: {
@@ -147,7 +149,7 @@ export const ADMPA = ({
     return closeAlertTimeOut();
   };
 
-  const handleUpdateArticle = async (editableArt: IArticle) => {
+  const handleUpdateArticle = async (editableArt: IArticle, handleUpdateArticle = Function()) => {
     if (editableArt.familia.id.length === 0) {
       return errorValidateForm("familia");
     }
@@ -178,8 +180,7 @@ export const ADMPA = ({
     setShowLoader(false);
     if (response) {
       if (response.status === 201) {
-        getArticlesList()
-        handleChangeUnidad(precioState.unidad_descripcion, Number(index))
+        getArticlesList(()=>handleUpdateArticle())
         setShowAlert({
           ...showAlert,
           icon: "success",
@@ -277,6 +278,7 @@ export const ADMPA = ({
         show={precio}
         showAlert={showAlert}
         unidades={unidades}
+        handleCreateSetNewUnidad={handleCreateSetNewUnidad}
       />
     </>
   );

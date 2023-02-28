@@ -71,7 +71,7 @@ export const SelectDataTable: FC<ISelectDataTable> = ({
     setState({
       proveedor: "",
     });
-  }, [value]);
+  }, [value, dataList]);
 
   return (
     <>

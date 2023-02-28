@@ -6,7 +6,10 @@ import { clsx } from "@/lib/clsx";
 import { FC, FormEvent, use, useEffect, useState } from "react";
 import { Articulo } from "./Articulo";
 import { NuevoCliente } from "./NuevoCliente";
-import { IArticle } from "../../../../interfaces/comercial/mantenimiento/articulo/articulosInterfaces";
+import {
+  IArticle,
+  IArticlePrecios,
+} from "../../../../interfaces/comercial/mantenimiento/articulo/articulosInterfaces";
 import { IWareHouse } from "@/interfaces/comercial/mantenimiento/empresa/almacenInterfaces";
 import { IClientProvider } from "@/interfaces/comercial/mantenimiento/cliente-proveedor/proveedorClientInterfaces";
 import { IAlert } from "@/interfaces/componentsInterfaces";
@@ -52,7 +55,7 @@ interface INuevaCompraForm {
   groupsList: IGroup[];
   brandsList: IBrand[];
   stateArticlesList: IEstadoArticulo[];
-  getArticlesList: () => void;
+  getArticlesList: (handleCreateSetNewUnidad?: () => void) => void;
   getSectorsList: () => void;
   getZonesList: () => void;
   getBrandsList: () => void;
@@ -420,6 +423,23 @@ export const NCF: FC<INuevaCompraForm> = ({
         }),
       });
     }
+  };
+
+  const handleCreateSetNewUnidad = (newPrecio: IArticlePrecios) => {
+    const id = Number(index)
+    setNewCompras({
+      ...newCompras,
+      articulos: newCompras.articulos.map((item, index) =>
+        index == id
+          ? {
+              ...item,
+              unidad_abreviatura: newPrecio.unidad_abreviatura,
+              unidad_descripcion: newPrecio.unidad_descripcion,
+              unidad_valor: newPrecio.unidad_valor
+            }
+          : item
+      ),
+    });
   };
 
   const handleDecimalsDataTable = (numero: string): string => {
@@ -1136,6 +1156,7 @@ export const NCF: FC<INuevaCompraForm> = ({
           index={index}
           getArticlesList={getArticlesList}
           handleChangeUnidad={handleChangeUnidad}
+          handleCreateSetNewUnidad={handleCreateSetNewUnidad}
         />
       </div>
     </div>
