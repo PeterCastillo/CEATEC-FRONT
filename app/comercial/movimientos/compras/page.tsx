@@ -332,8 +332,8 @@ export default function Home() {
     );
     setShowLoader(false);
     if (response) {
-      console.log(2)
       if (response.status == 200) {
+        console.log(1)
         setArticulos(response.json.data);
       }
     }

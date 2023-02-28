@@ -11,7 +11,6 @@ import { FormEvent, useEffect, useState } from "react";
 import { IUnit } from "@/interfaces/comercial/mantenimiento/grupo-familia-marca-unidad/unidadIntefaces";
 import { NuevaUnidad } from "./NuevaUnidad";
 import { IAlert } from "@/interfaces/componentsInterfaces";
-import { SelectDinamico } from "@/components/commons/select/Select";
 
 export const Precio = ({
   show,
@@ -133,18 +132,6 @@ export const Precio = ({
     return numero.toString();
   };
 
-  const handleChangeUnidad = async (value: string) => {
-    const unidad = unidades.find((f) => f.descripcion === value);
-    if (unidad) {
-      setPrecioState({
-        ...precioState,
-        unidad_descripcion: unidad.descripcion,
-        unidad_abreviatura: unidad.abreviatura,
-        unidad_valor: Number(unidad.valor),
-      });
-    }
-  };
-
   const handlePrincipalCheck = () => {
     setPrecioState({
       ...precioState,
@@ -152,15 +139,15 @@ export const Precio = ({
     });
   };
 
-  const handleAgregarPrecio = () => {
-    if(precioState.unidad_descripcion.trim() == ""){
-      return
+  const handleAgregarPrecio = async () => {
+    if (precioState.unidad_descripcion.trim() == "") {
+      return;
     }
-    if(precioState.unidad_abreviatura.trim() == ""){
-      return
+    if (precioState.unidad_abreviatura.trim() == "") {
+      return;
     }
-    if(precioState.unidad_valor.toString().trim() == ""){
-      return
+    if (precioState.unidad_valor.toString().trim() == "") {
+      return;
     }
     setPorcentajes({
       precio_1: "",
@@ -212,7 +199,7 @@ export const Precio = ({
         return closeAlertTimeOut();
       }
       setNewEditableArticulo(unidad);
-      handleUpdateArticle(unidad);
+      handleUpdateArticle(unidad)
       setPrecioActual({
         id: "",
       });
@@ -368,7 +355,7 @@ export const Precio = ({
                 precio_3: "",
                 precio_4: "",
                 precio_5: "",
-              })
+              });
             }}
             className={styles.close}
           >

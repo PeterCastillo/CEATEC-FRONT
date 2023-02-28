@@ -141,11 +141,7 @@ export const CompraDataTable: FC<ICompraDataTable> = ({
     if (!data.length) {
       return (
         <tr>
-          <td>No tiene datos</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td colSpan={6}>No tiene datos</td>
         </tr>
       );
     }

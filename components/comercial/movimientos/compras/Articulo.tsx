@@ -9,6 +9,7 @@ import { IUnit } from "@/interfaces/comercial/mantenimiento/grupo-familia-marca-
 import { IAlert } from "@/interfaces/componentsInterfaces";
 import { IArticuloCompra } from "@/interfaces/comercial/movimientos/comprasIntefaces";
 import { ImPlus, ImPencil } from "react-icons/im";
+import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
 export const Articulo = ({
   show,
@@ -89,14 +90,21 @@ export const Articulo = ({
     precios: [],
   });
   const [articlesList, setArticlesList] = useState<IArticle[]>(articulos);
+  const [pagination, setPagination] = useState(0);
 
   useEffect(() => {
     setArticlesList(articulos);
   }, [articulos]);
 
+  useEffect(() => {
+    filterArticulos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filtros]);
+
   const handleFiltrosChange = (
     e: FormEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
+    setPagination(0);
     const { name, value } = e.currentTarget;
     setFiltros({
       ...filtros,
@@ -112,10 +120,10 @@ export const Articulo = ({
       setFiltros({
         ...filtros,
         codigo: name == "codigo" ? value : "",
-        nombre: name == "nombre" ? value : "",
-        marca: name == "marca" ? value : "",
+        nombre: name == "nombre" ? value.toUpperCase() : "",
+        marca: name == "marca" ? value.toUpperCase() : "",
         stock: name == "stock" ? value : "",
-        ubicacion: name == "ubicacion" ? value : "",
+        ubicacion: name == "ubicacion" ? value.toUpperCase() : "",
       });
     }
   };
@@ -152,6 +160,181 @@ export const Articulo = ({
           ?.unidad_valor ?? "",
     });
     setShowModal(false);
+  };
+
+  const filterArticulos = () => {
+    const filterData = articulos.filter((articulo) => {
+      if (filtros.codigo) {
+        return articulo.codigo_articulo.startsWith(filtros.codigo);
+      }
+      if (filtros.nombre) {
+        return articulo.nombre_articulo
+          .toUpperCase()
+          .includes(filtros.nombre.toUpperCase());
+      }
+      if (filtros.marca) {
+        return articulo.marca.descripcion
+          .toUpperCase()
+          .includes(filtros.marca.toUpperCase());
+      }
+      if (filtros.stock) {
+        return articulo.stock_actual
+          .toString()
+          .toUpperCase()
+          .includes(filtros.stock.toUpperCase());
+      }
+      if (filtros.ubicacion) {
+        return articulo.ubicacion
+          .toUpperCase()
+          .includes(filtros.ubicacion.toUpperCase());
+      }
+      return articulo;
+    });
+    setArticlesList(filterData);
+  };
+
+  const renderArticulos = () => {
+    const startIndex = pagination * 10;
+    const endIndex = pagination * 10 + 10;
+    if (!articlesList.length) {
+      return (
+        <>
+          <tr>
+            <td colSpan={5}>No tiene datos</td>
+          </tr>
+          <tr>
+            <td colSpan={5}></td>
+          </tr>
+          <tr>
+            <td colSpan={5}></td>
+          </tr>
+          <tr>
+            <td colSpan={5}></td>
+          </tr>
+          <tr>
+            <td colSpan={5}></td>
+          </tr>
+          <tr>
+            <td colSpan={5}></td>
+          </tr>
+          <tr>
+            <td colSpan={5}></td>
+          </tr>
+          <tr>
+            <td colSpan={5}></td>
+          </tr>
+          <tr>
+            <td colSpan={5}></td>
+          </tr>
+          <tr>
+            <td colSpan={5}></td>
+          </tr>
+        </>
+      );
+    }
+    const newData = [...articlesList];
+    const empty = articlesList.length.toString().split("").at(-1);
+    for (let i = 0; i < 10 - Number(empty); i++) {
+      const emptyObject = {
+        _id: {
+          $oid: "",
+        },
+        estado: true,
+        grupo: {
+          id: "",
+          descripcion: "",
+        },
+        familia: {
+          id: "",
+          descripcion: "",
+        },
+        codigo_barras: "",
+        codigo_articulo: "",
+        expira: "",
+        ubicacion: "",
+        stock: [],
+        stock_actual: 0,
+        stock_minimo: 0,
+        stock_maximo: 0,
+        descripcion_utilidad: "",
+        calidad: "",
+        codigo_sunat: "",
+        estado_articulo: {
+          id: "",
+          descripcion: "",
+        },
+        exonerado_igv: true,
+        formula_derivado: true,
+        nombre_corto: "",
+        nombre_articulo: "",
+        marca: {
+          id: "",
+          descripcion: "",
+        },
+        isc: "",
+        inafec: "",
+        empresa_id: "",
+        precios: [],
+      };
+      newData.push(emptyObject);
+    }
+    return newData
+      .sort((a, b) => {
+        if (a._id.$oid && b._id.$oid) {
+          if (filtros.ordenar_by == "1") {
+            if (a.codigo_articulo < b.codigo_articulo) {
+              return -1;
+            }
+            if (a.codigo_articulo > b.codigo_articulo) {
+              return 1;
+            }
+          }
+          if (filtros.ordenar_by == "2") {
+            if (a.nombre_articulo < b.nombre_articulo) {
+              return -1;
+            }
+            if (a.nombre_articulo > b.nombre_articulo) {
+              return 1;
+            }
+          }
+        }
+        return 0;
+      })
+      .map((articulo, index) => (
+        <tr
+          className={`${
+            article._id.$oid &&
+            articleSelected._id.$oid == articulo._id.$oid &&
+            styles.selected_row
+          }`}
+          onClick={() => {
+            // if (!article._id.$oid) {
+            //   return
+            // }
+              articleSelected._id.$oid == articulo._id.$oid
+                ? setArticle({
+                    ...articulo,
+                    _id: { $oid: "" },
+                  })
+                : setArticle(articulo);
+              articleSelected._id.$oid == articulo._id.$oid
+                ? setArticleSelected({
+                    ...articulo,
+                    _id: { $oid: "" },
+                  })
+                : setArticleSelected(articulo);
+            
+          }}
+          key={index}
+        >
+          <td>{articulo.codigo_articulo}</td>
+          <td>{articulo.nombre_articulo}</td>
+          <td>{articulo.marca.descripcion}</td>
+          <td>{articulo._id.$oid && articulo.stock_actual}</td>
+          <td>{articulo.ubicacion}</td>
+        </tr>
+      ))
+      .slice(startIndex, endIndex);
   };
 
   return (
@@ -195,6 +378,42 @@ export const Articulo = ({
           <button className={styles.add} onClick={handleAddNewArticleVenta}>
             <FaPlus /> Agregar
           </button>
+        </div>
+        <div className={styles.pag}>
+          <div
+            onClick={() => {
+              if (articlesList.length == 0) {
+                return;
+              }
+              setPagination(
+                pagination === 0
+                  ? Math.ceil(articlesList.length / 10) - 1
+                  : pagination - 1
+              );
+            }}
+          >
+            <IoIosArrowBack />
+          </div>
+          <span>
+            {pagination + 1}/
+            {Math.ceil(articlesList.length / 10) == 0
+              ? 1
+              : Math.ceil(articlesList.length / 10)}
+          </span>
+          <div
+            onClick={() => {
+              if (articlesList.length == 0) {
+                return;
+              }
+              setPagination(
+                pagination == Math.ceil(articlesList.length / 10) - 1
+                  ? 0
+                  : pagination + 1
+              );
+            }}
+          >
+            <IoIosArrowForward />
+          </div>
         </div>
         <div className={styles.table}>
           <table>
@@ -255,83 +474,7 @@ export const Articulo = ({
                   />
                 </td>
               </tr>
-              {articlesList
-                .filter((articulo) =>
-                  filtros.codigo ||
-                  filtros.nombre ||
-                  filtros.marca ||
-                  filtros.stock ||
-                  filtros.ubicacion
-                    ? (filtros.codigo &&
-                        articulo.codigo_articulo.startsWith(filtros.codigo)) ||
-                      (filtros.nombre &&
-                        articulo.nombre_articulo
-                          .toUpperCase()
-                          .includes(filtros.nombre.toUpperCase())) ||
-                      (filtros.marca &&
-                        articulo.marca.descripcion
-                          .toUpperCase()
-                          .includes(filtros.marca.toUpperCase())) ||
-                      (filtros.stock &&
-                        articulo.stock_actual
-                          .toString()
-                          .toUpperCase()
-                          .includes(filtros.stock.toUpperCase())) ||
-                      (filtros.ubicacion &&
-                        articulo.ubicacion
-                          .toUpperCase()
-                          .includes(filtros.ubicacion.toUpperCase()))
-                    : articulo
-                )
-                .sort((a, b) => {
-                  if (filtros.ordenar_by == "1") {
-                    if (a.codigo_articulo < b.codigo_articulo) {
-                      return -1;
-                    }
-                    if (a.codigo_articulo > b.codigo_articulo) {
-                      return 1;
-                    }
-                  }
-                  if (filtros.ordenar_by == "2") {
-                    if (a.nombre_articulo < b.nombre_articulo) {
-                      return -1;
-                    }
-                    if (a.nombre_articulo > b.nombre_articulo) {
-                      return 1;
-                    }
-                  }
-                  return 0;
-                })
-                .map((articulo) => (
-                  <tr
-                    className={`${
-                      articleSelected._id.$oid == articulo._id.$oid &&
-                      styles.selected_row
-                    }`}
-                    onClick={() => {
-                      articleSelected._id.$oid == articulo._id.$oid
-                        ? setArticle({
-                            ...articulo,
-                            _id: { $oid: "" },
-                          })
-                        : setArticle(articulo);
-                      articleSelected._id.$oid == articulo._id.$oid
-                        ? setArticleSelected({
-                            ...articulo,
-                            _id: { $oid: "" },
-                          })
-                        : setArticleSelected(articulo);
-                    }}
-                    key={articulo._id.$oid}
-                  >
-                    <td>{articulo.codigo_articulo}</td>
-                    <td>{articulo.nombre_articulo}</td>
-                    <td>{articulo.marca.descripcion}</td>
-                    <td>{articulo.stock_actual}</td>
-                    <td>{articulo.ubicacion}</td>
-                  </tr>
-                ))
-                .reverse()}
+              {renderArticulos()}
             </tbody>
           </table>
         </div>
