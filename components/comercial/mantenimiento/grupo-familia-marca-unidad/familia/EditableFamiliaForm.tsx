@@ -76,6 +76,12 @@ export const EditableFamiliaForm: FC<IEditableFamiliaForm> = ({
       considerar_en_venta: !newEditable.considerar_en_venta,
     });
   };
+  const handleCreateSetGroup = (grupo:IGroup) => {
+    setNewEditable({
+      ...newEditable,
+      grupo_id: grupo._id.$oid
+    })
+  }
 
   return (
     <>
@@ -216,6 +222,7 @@ export const EditableFamiliaForm: FC<IEditableFamiliaForm> = ({
         setShowAlert={setShowAlert}
         setShowLoader={setShowLoader}
         showAlert={showAlert}
+        handleCreateSetGroup={handleCreateSetGroup}
       />
     </>
   );
