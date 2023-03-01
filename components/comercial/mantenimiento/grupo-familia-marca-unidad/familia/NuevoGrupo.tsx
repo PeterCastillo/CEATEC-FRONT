@@ -8,7 +8,7 @@ import {
   getLocalStorageItem,
   getTokenFromLocalStorage,
 } from "@/utils/localStorageControl";
-import { INewGroup } from "@/interfaces/comercial/mantenimiento/grupo-familia-marca-unidad/grupoInterfaces";
+import { IGroup, INewGroup } from "@/interfaces/comercial/mantenimiento/grupo-familia-marca-unidad/grupoInterfaces";
 import { postGrupoService } from "@/services/comercial/mantenimiento/grupo-familia-marca-unidad/grupoServices";
 
 interface INuevoGrupo {
@@ -18,7 +18,8 @@ interface INuevoGrupo {
   showAlert: IAlert;
   setShowAlert: (alert: IAlert) => void;
   closeAlertTimeOut: () => void;
-  getGroupsList: () => void;
+  getGroupsList: (handleCreateSetGroup?: () => void) => void;
+  handleCreateSetGroup: (grupo: IGroup) => void
 }
 
 export const NuevoGrupo: FC<INuevoGrupo> = ({
@@ -29,6 +30,7 @@ export const NuevoGrupo: FC<INuevoGrupo> = ({
   setShowAlert,
   closeAlertTimeOut,
   getGroupsList,
+  handleCreateSetGroup
 }) => {
   const [newGroup, setNewGroup] = useState<INewGroup>({
     descripcion: "",
@@ -67,7 +69,7 @@ export const NuevoGrupo: FC<INuevoGrupo> = ({
     );
     setShowLoader(false);
     if (response) {
-      getGroupsList();
+      getGroupsList(()=>{handleCreateSetGroup(response.json.data)});
       setNewGroup({
         descripcion: "",
         empresa_id: getLocalStorageItem("empresa"),

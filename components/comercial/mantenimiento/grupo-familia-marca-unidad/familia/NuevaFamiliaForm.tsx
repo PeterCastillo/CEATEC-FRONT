@@ -73,6 +73,12 @@ export const NuevaFamiliaForm: FC<INuevaFamiliaForm> = ({
       considerar_en_venta: !newFamilia.considerar_en_venta,
     });
   };
+  const handleCreateSetGroup = (grupo:IGroup) => {
+    setNew({
+      ...newFamilia,
+      grupo_id: grupo._id.$oid
+    })
+  }
 
   return (
     <>
@@ -213,6 +219,7 @@ export const NuevaFamiliaForm: FC<INuevaFamiliaForm> = ({
         setShowAlert={setShowAlert}
         setShowLoader={setShowLoader}
         showAlert={showAlert}
+        handleCreateSetGroup={handleCreateSetGroup}
       />
     </>
   );

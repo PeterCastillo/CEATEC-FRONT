@@ -79,7 +79,6 @@ export const SelectDinamico: FC<ISectorSelect> = ({
               setTimeout(() => setModalList(false), 200);
             }}
             onFocus={() => {
-              console.log(dataList);
               setModalList(true);
               setData(
                 state.input

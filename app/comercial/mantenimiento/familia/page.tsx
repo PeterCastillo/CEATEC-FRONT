@@ -102,7 +102,7 @@ export default function Home() {
     setShowLoader(false);
   };
 
-  const getGroupsList = async () => {
+  const getGroupsList = async (handleCreateSetGroup = Function()) => {
     setShowLoader(true);
     const groups = await getListaGrupoService(
       getLocalStorageItem("empresa"),
@@ -111,6 +111,7 @@ export default function Home() {
     if (groups) {
       if (groups.status === 200) {
         setGroupsList(groups.json.data);
+        handleCreateSetGroup()
       }
     }
     setShowLoader(false);
