@@ -69,7 +69,7 @@ export default function Home() {
     show: false,
   });
 
-  const getBranchOfficesList = async () => {
+  const getBranchOfficesList = async (handleCreateSetSucursal = Function()) => {
     setShowLoader(true);
     const branchOffices = await getListaSucursalService(
       getLocalStorageItem("empresa"),
@@ -78,6 +78,7 @@ export default function Home() {
     if (branchOffices) {
       if (branchOffices.status === 200) {
         setBranchOfficesList(branchOffices.json.data);
+        handleCreateSetSucursal()
       }
     }
     setShowLoader(false);

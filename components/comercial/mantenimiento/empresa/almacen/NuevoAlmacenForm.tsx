@@ -45,6 +45,14 @@ export const NuevoAlmacenForm: FC<INuevoAlmacenForm> = ({
     });
   };
 
+  const handleCreateSetSucursal = (response: IBranchOffice) => {
+    setModalSucursal(false)
+    setNew({
+      ...newAlmacen,
+      sucursal_id: response._id.$oid
+    })
+  }
+
   return (
     <>
       <div className={styles.row}>
@@ -92,6 +100,7 @@ export const NuevoAlmacenForm: FC<INuevoAlmacenForm> = ({
         showAlert={showAlert}
         closeAlertTimeOut={closeAlertTimeOut}
         getBranchOfficesList={getBranchOfficesList}
+        handleCreateSetSucursal={handleCreateSetSucursal}
       />
     </>
   );

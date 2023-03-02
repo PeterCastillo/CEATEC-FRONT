@@ -8,7 +8,10 @@ import {
   getLocalStorageItem,
   getTokenFromLocalStorage,
 } from "@/utils/localStorageControl";
-import { INewGroup } from "@/interfaces/comercial/mantenimiento/grupo-familia-marca-unidad/grupoInterfaces";
+import {
+  IGroup,
+  INewGroup,
+} from "@/interfaces/comercial/mantenimiento/grupo-familia-marca-unidad/grupoInterfaces";
 import { postGrupoService } from "@/services/comercial/mantenimiento/grupo-familia-marca-unidad/grupoServices";
 
 interface INuevoGrupo {
@@ -18,7 +21,8 @@ interface INuevoGrupo {
   showAlert: IAlert;
   setShowAlert: (alert: IAlert) => void;
   closeAlertTimeOut: () => void;
-  getGroupsList: () => void;
+  getGroupsList: (handleCreateSetGrupo?: () => void) => void;
+  handleCreateSetGrupo: (group: IGroup) => void;
 }
 
 export const NuevoGrupo: FC<INuevoGrupo> = ({
@@ -29,6 +33,7 @@ export const NuevoGrupo: FC<INuevoGrupo> = ({
   setShowAlert,
   closeAlertTimeOut,
   getGroupsList,
+  handleCreateSetGrupo,
 }) => {
   const [newGroup, setNewGroup] = useState<INewGroup>({
     descripcion: "",
@@ -67,19 +72,21 @@ export const NuevoGrupo: FC<INuevoGrupo> = ({
     );
     setShowLoader(false);
     if (response) {
-      getGroupsList();
-      setNewGroup({
-        descripcion: "",
-        empresa_id: getLocalStorageItem("empresa"),
-      });
-      setShowAlert({
-        ...showAlert,
-        icon: "success",
-        title: "Operación exitosa",
-        message: "Grupo creado correctamente",
-        show: true,
-      });
-      return closeAlertTimeOut();
+      if (response.status == 201) {
+        getGroupsList(() => handleCreateSetGrupo(response.json.data));
+        setNewGroup({
+          descripcion: "",
+          empresa_id: getLocalStorageItem("empresa"),
+        });
+        setShowAlert({
+          ...showAlert,
+          icon: "success",
+          title: "Operación exitosa",
+          message: "Grupo creado correctamente",
+          show: true,
+        });
+        return closeAlertTimeOut();
+      }
     }
     setShowAlert({
       ...showAlert,
@@ -109,7 +116,8 @@ export const NuevoGrupo: FC<INuevoGrupo> = ({
           <div className={styles.row}>
             <div className={clsx(styles.f_g, styles.f_2)}>
               <label htmlFor="descripcion">Descripción</label>
-              <input autoComplete="off"
+              <input
+                autoComplete="off"
                 id="descripcion"
                 name="descripcion"
                 type="text"

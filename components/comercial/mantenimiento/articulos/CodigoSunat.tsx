@@ -181,7 +181,6 @@ export const CodigoSunat = ({
       return (
         <tr>
           <td>No tiene datos</td>
-          <td></td>
         </tr>
       );
     }

@@ -123,7 +123,7 @@ export const EAF = ({
     }
   };
 
-  const getFamilyList = async () => {
+  const getFamilyList = async (handleCreateSetFamilia = Function()) => {
     if (article.grupo.id) {
       setShowLoader(true);
       const families = await getFamilysForGroupsService(
@@ -133,6 +133,7 @@ export const EAF = ({
       if (families) {
         if (families.status === 200) {
           setFamiliesListByGroup(families.json.data);
+          handleCreateSetFamilia()
         }
       }
       setShowLoader(false);
@@ -219,6 +220,40 @@ export const EAF = ({
       }
     }
   };
+
+  const handleCreateSetGrupo = (response:IGroup) => {
+    setModalGrupo(false)
+    setArticle({
+      ...article,
+      grupo: {
+        id: response._id.$oid,
+        descripcion: response.descripcion
+      }
+    })
+  }
+  const handleCreateSetFamilia = (response:IFamily) => {
+    if(response.grupo_id != article.grupo.id){
+      return
+    }
+    setModalFamilia(false)
+    setArticle({
+      ...article,
+      familia: {
+        id: response._id.$oid,
+        descripcion: response.descripcion
+      }
+    })
+  }
+  const handleCreateSetMarca = (response:IBrand) => {
+    setModalMarca(false)
+    setArticle({
+      ...article,
+      marca: {
+        id: response._id.$oid,
+        descripcion: response.descripcion
+      }
+    })
+  }
 
   return (
     <>
@@ -459,6 +494,7 @@ export const EAF = ({
         setShowAlert={setShowAlert}
         setShowLoader={setShowLoader}
         showAlert={showAlert}
+        handleCreateSetGrupo={handleCreateSetGrupo}
       />
 
       <NuevaFamilia
@@ -471,6 +507,7 @@ export const EAF = ({
         showAlert={showAlert}
         grupos={groupsList}
         getFamilyList={getFamilyList}
+        handleCreateSetFamilia={handleCreateSetFamilia}
       />
       <NuevaMarca
         modal={modalMarca}
@@ -480,6 +517,7 @@ export const EAF = ({
         setShowLoader={setShowLoader}
         showAlert={showAlert}
         getBrandsList={getBrandsList}
+        handleCreateSetMarca={handleCreateSetMarca}
       />
       <CodigoSunat
         closeAlertTimeOut={closeAlertTimeOut}

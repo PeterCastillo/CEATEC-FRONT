@@ -91,7 +91,7 @@ export default function Home() {
     }
   };
 
-  const getBranchOfficesList = async () => {
+  const getBranchOfficesList = async (handleCreateSetSucursal = Function()) => {
     setShowLoader(true);
     const branchOffices = await getListaSucursalService(
       getLocalStorageItem("empresa"),
@@ -101,6 +101,7 @@ export default function Home() {
     if (branchOffices) {
       if (branchOffices.status === 200) {
         setBranchOfficesList(branchOffices.json.data);
+        handleCreateSetSucursal()
       }
     }
   };
@@ -369,6 +370,11 @@ export default function Home() {
               getBoxesList={getBoxesList}
               setNewBox={setNewBox}
               newBox={newBox}
+              closeAlertTimeOut={closeAlertTimeOut}
+              getBranchOfficesList={getBranchOfficesList}
+              setShowAlert={setShowAlert}
+              setShowLoader={setShowLoader}
+              showAlert={showAlert}
             />
           </div>
         );
@@ -380,6 +386,11 @@ export default function Home() {
               newEditableBox={newEditableBox}
               branchOfficesList={branchOfficesList}
               usersList={usersList}
+              closeAlertTimeOut={closeAlertTimeOut}
+              getBranchOfficesList={getBranchOfficesList}
+              setShowAlert={setShowAlert}
+              setShowLoader={setShowLoader}
+              showAlert={showAlert}
             />
           </div>
         );

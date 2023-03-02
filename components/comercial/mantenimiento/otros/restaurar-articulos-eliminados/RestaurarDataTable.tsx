@@ -88,7 +88,7 @@ export const RestaurarDataTable: FC<IRestaurarDataTable> = ({
     if (!articles.length) {
       return (
         <tr>
-          <td>No tiene datos</td>
+          <td colSpan={3}>No tiene datos</td>
         </tr>
       );
     }

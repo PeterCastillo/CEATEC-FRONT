@@ -34,10 +34,10 @@ export const NuevoArticulo = ({
   brandsList: IBrand[];
   stateArticlesList: IEstadoArticulo[];
   closeAlertTimeOut: () => void;
-  getGroupsList: () => void;
   setShowAlert: (alert: IAlert) => void;
   showAlert: IAlert;
-  getBrandsList: () => void;
+  getGroupsList: (handleCreateSetGrupo?: () => void) => void;
+  getBrandsList: (handleCreateSetMarca?: () => void) => void;
   articulosList: IArticle[];
   segmentosList: ISegmentoCodigoSunat[];
 }) => {

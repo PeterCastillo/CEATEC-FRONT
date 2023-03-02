@@ -25,7 +25,6 @@ import { IEstadoArticulo } from "@/interfaces/comercial/extras/estadoArticuloInt
 import { NuevoAlmacen } from "./NuevoAlmacen";
 import { IBranchOffice } from "@/interfaces/comercial/mantenimiento/empresa/sucursalInterfaces";
 import { SelectDataTable } from "./SelectDataTable";
-import { NuevaUnidad } from "./NuevaUnidad";
 import { EditarArticulo } from "./EditarArticulo";
 import { EditCliente } from "./EditCliente";
 import { ISegmentoCodigoSunat } from "@/interfaces/comercial/mantenimiento/codigo-sunat/codigoSunatInterfaces";
@@ -100,7 +99,6 @@ export const ECF: FC<IEFC> = ({
   const [modalAdmPrecios, setModalAdmPrecios] = useState(false);
   const [articuloId, setArticulId] = useState("");
   const [modalAlmacen, setModalAlmacen] = useState(false);
-  const [modalUnidad, setModalUnidad] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showClientModal, setShowClientModal] = useState(false);
   const [showArticleModal, setShowArticleModal] = useState(false);
@@ -636,7 +634,19 @@ export const ECF: FC<IEFC> = ({
     }
   };
 
+  const handleModalAlmacen = (id: string, index_articulo: number) => {
+    setModalAlmacen(true);
+    setArticulId(id);
+    const item = newEditableCompra.articulos.find(
+      (item, index) => index == index_articulo
+    );
+    if (item) {
+      setIndex(index_articulo.toString());
+    }
+  };
+
   const handleCreateSetNewUnidad = (newPrecio: IArticlePrecios) => {
+    setModalAdmPrecios(false)
     const id = Number(index)
     setNewEditableCompra({
       ...newEditableCompra,
@@ -650,6 +660,50 @@ export const ECF: FC<IEFC> = ({
             }
           : item
       ),
+    });
+  };
+
+  const handleCreateSetAlmacen = (almacen: IWareHouse) => {
+    setModalAlmacen(false);
+    const id = Number(index);
+    setNewEditableCompra({
+      ...newEditableCompra,
+      articulos: newEditableCompra.articulos.map((item, index) =>
+        index == id
+          ? {
+              ...item,
+              almacen_id: almacen._id.$oid,
+              almacen_nombre: almacen.descripcion,
+            }
+          : item
+      ),
+    });
+  };
+
+  const handleCreateSetProveedor = (proveedor:IClientProvider) => {
+    setShowNewClientModal(false)
+    setShowClientModal(false)
+    handleSetProveedor(proveedor)
+  }
+
+  const handleCreateSetArticulo = (articulo: IArticle) => {
+    setShowArticleModal(false);
+    setShowModal(false);
+    handleSelectArticle({
+      articulo_id: article._id.$oid,
+      articulo_nombre: article.nombre_articulo,
+      almacen_id: "",
+      almacen_nombre: "",
+      cantidad: "",
+      costo: "",
+      total: "",
+      unidad_descripcion: article.precios[0]
+        ? articulo.precios[0].unidad_descripcion
+        : "",
+      unidad_abreviatura: article.precios[0]
+        ? articulo.precios[0].unidad_abreviatura
+        : "",
+      unidad_valor: article.precios[0] ? articulo.precios[0].unidad_valor : "",
     });
   };
 
@@ -830,7 +884,6 @@ export const ECF: FC<IEFC> = ({
                         })}
                       handleChange={handleChangeUnidad}
                       id={index}
-                      setModal={setModalUnidad}
                       value={articulo.unidad_descripcion}
                       articuloId={articulo.unidad_descripcion}
                       adm={true}
@@ -848,11 +901,10 @@ export const ECF: FC<IEFC> = ({
                       })}
                       handleChange={handleChangeAlmacen}
                       id={index}
-                      setModal={setModalAlmacen}
                       value={articulo.almacen_id}
                       articuloId={articulo.articulo_id}
                       adm={false}
-                      handleModalAdmPrecios={handleModalAdmPrecios}
+                      handleModalAdmPrecios={handleModalAlmacen}
                     />
                   </td>
                   <td>
@@ -1071,6 +1123,7 @@ export const ECF: FC<IEFC> = ({
           getBrandsList={getBrandsList}
           getGroupsList={getGroupsList}
           segmentosList={segmentosList}
+          handleCreateSetArticulo={handleCreateSetArticulo}
         />
         <EditarArticulo
           segmentosList={segmentosList}
@@ -1109,6 +1162,7 @@ export const ECF: FC<IEFC> = ({
           getProveedoresList={getProveedoresList}
           getSectorsList={getSectorsList}
           getZonesList={getZonesList}
+          handleCreateSetProveefdor={handleCreateSetProveedor}
         />
 
         <Cliente
@@ -1151,17 +1205,8 @@ export const ECF: FC<IEFC> = ({
           setShowLoader={setShowLoader}
           showAlert={showAlert}
           setShowAlert={setShowAlert}
+          handleCreateSetAlmacen={handleCreateSetAlmacen}
         />
-        <NuevaUnidad
-          closeAlertTimeOut={closeAlertTimeOut}
-          modal={modalUnidad}
-          setModal={setModalUnidad}
-          setShowLoader={setShowLoader}
-          showAlert={showAlert}
-          setShowAlert={setShowAlert}
-          getUnitsList={getUnitsList}
-        />
-
         <ADMPA
           articuloId={articuloId}
           articulos={articulos}

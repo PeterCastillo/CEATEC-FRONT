@@ -8,7 +8,10 @@ import {
   getLocalStorageItem,
   getTokenFromLocalStorage,
 } from "@/utils/localStorageControl";
-import { INewBranchOffice } from "@/interfaces/comercial/mantenimiento/empresa/sucursalInterfaces";
+import {
+  IBranchOffice,
+  INewBranchOffice,
+} from "@/interfaces/comercial/mantenimiento/empresa/sucursalInterfaces";
 import { postSucursalService } from "@/services/comercial/mantenimiento/empresa/sucursalService";
 
 interface INuevaSucursal {
@@ -18,7 +21,8 @@ interface INuevaSucursal {
   showAlert: IAlert;
   setShowAlert: (alert: IAlert) => void;
   closeAlertTimeOut: () => void;
-  getBranchOfficesList: () => void;
+  getBranchOfficesList: (handleCreateSetSucursal?: () => void) => void;
+  handleCreateSetSucursal: (sucursal: IBranchOffice) => void;
 }
 
 export const NuevaSucursal: FC<INuevaSucursal> = ({
@@ -28,7 +32,8 @@ export const NuevaSucursal: FC<INuevaSucursal> = ({
   showAlert,
   setShowAlert,
   closeAlertTimeOut,
-  getBranchOfficesList
+  getBranchOfficesList,
+  handleCreateSetSucursal,
 }) => {
   const [newBranchOffice, setNewBranchOffice] = useState<INewBranchOffice>({
     descripcion: "",
@@ -67,20 +72,20 @@ export const NuevaSucursal: FC<INuevaSucursal> = ({
     if (newBranchOffice.empresa_id.trim() === "") {
       return errorValidateForm("empresa");
     }
-    setShowLoader(true)
+    setShowLoader(true);
     const response = await postSucursalService(
       newBranchOffice,
       getTokenFromLocalStorage()
     );
-    setShowLoader(false)
+    setShowLoader(false);
     if (response) {
       if (response.status === 201) {
-        getBranchOfficesList();
+        getBranchOfficesList(()=>handleCreateSetSucursal(response.json.data));
         setNewBranchOffice({
-            descripcion: "",
-            ubicacion: "",
-            empresa_id: getLocalStorageItem("empresa"),
-          });;
+          descripcion: "",
+          ubicacion: "",
+          empresa_id: getLocalStorageItem("empresa"),
+        });
         setShowAlert({
           ...showAlert,
           icon: "success",
@@ -101,7 +106,6 @@ export const NuevaSucursal: FC<INuevaSucursal> = ({
     return closeAlertTimeOut();
   };
 
-
   return (
     <div className={clsx(styles.modal, !modal && styles.hidden)}>
       <div className={styles.container}>
@@ -120,7 +124,8 @@ export const NuevaSucursal: FC<INuevaSucursal> = ({
           <div className={styles.row}>
             <div className={clsx(styles.f_g, styles.f_2)}>
               <label htmlFor="descripcion">Descripcion</label>
-              <input autoComplete="off"
+              <input
+                autoComplete="off"
                 id="descripcion"
                 name="descripcion"
                 type="text"
@@ -132,7 +137,8 @@ export const NuevaSucursal: FC<INuevaSucursal> = ({
           <div className={styles.row}>
             <div className={clsx(styles.f_g, styles.f_2)}>
               <label htmlFor="ubicacion">Ubicación</label>
-              <input autoComplete="off"
+              <input
+                autoComplete="off"
                 id="ubicacion"
                 name="ubicacion"
                 type="text"

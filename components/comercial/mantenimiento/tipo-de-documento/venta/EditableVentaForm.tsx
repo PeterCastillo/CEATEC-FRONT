@@ -70,6 +70,14 @@ export const EditableVentaForm: FC<IEditableVentaForm> = ({
     });
   };
 
+  const handleCreateSetCaja = (caja: IBox) => {
+    setModalCajas(false)
+    setNewEditableTipoDocumentoVenta({
+      ...newEditableTipoDocumentoVenta,
+      caja_id: caja._id.$oid
+    })
+  }
+
   return (
     <>
       <div className={styles.row}>
@@ -149,6 +157,7 @@ export const EditableVentaForm: FC<IEditableVentaForm> = ({
         showAlert={showAlert}
         userList={userList}
         getCajasList={getCajasList}
+        handleCreateSetCaja={handleCreateSetCaja}
       />
     </>
   );

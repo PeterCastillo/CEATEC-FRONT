@@ -32,7 +32,8 @@ export const NuevoArticulo = ({
   getBrandsList,
   getGroupsList,
   articulosList,
-  segmentosList
+  segmentosList,
+  handleCreateSetArticulo
 }: {
   show: boolean;
   setShowNewClientModal: (data: boolean) => void;
@@ -44,11 +45,12 @@ export const NuevoArticulo = ({
   showAlert: IAlert;
   setShowAlert: (alert: IAlert) => void;
   setShowLoader: (status: boolean) => void;
-  getArticlesList: () => void;
+  getArticlesList: (handleCreateSetArticulo?: ()=> void) => void;
   getBrandsList: () => void;
   getGroupsList: () => void;
   articulosList: IArticle[]
   segmentosList: ISegmentoCodigoSunat[]
+  handleCreateSetArticulo: (article:IArticle) => void
 }) => {
   const [newArticle, setNewArticle] = useState<INewArticle>({
     grupo: {
@@ -144,7 +146,7 @@ export const NuevoArticulo = ({
     setShowLoader(false);
     if (response) {
       if (response.status == 201) {
-        getArticlesList();
+        getArticlesList(()=> handleCreateSetArticulo(response.json.data));
         setNewArticle({
           grupo: {
             id: "",
@@ -178,7 +180,18 @@ export const NuevoArticulo = ({
           descripcion_utilidad: "",
           empresa_id: getLocalStorageItem("empresa"),
           expira: "",
-          precios: [],
+          precios: [{
+            unidad_descripcion: "UNIDAD",
+            unidad_abreviatura: "UND",
+            unidad_valor: 1,
+            costo: 0,
+            precio_1: 0,
+            precio_2: 0,
+            precio_3: 0,
+            precio_4: 0,
+            precio_5: 0,
+            principal: true
+          }],
           stock: [],
           stock_actual: "",
           estado: true,

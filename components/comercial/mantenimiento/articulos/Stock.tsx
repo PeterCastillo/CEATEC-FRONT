@@ -160,6 +160,15 @@ export const Stock = ({
     return setShowModal(false);
   };
 
+  const handleCreateSetAlmacen = (almacen:IWareHouse) => {
+    setModalAlmacen(false)
+    setStock({
+      ...stock,
+      almacen_id: almacen._id.$oid,
+      almacen_descripcion: almacen.descripcion
+    })
+  }
+
   return (
     <div className={clsx(styles.modal, !show && styles.hidden)}>
       <div className={styles.container}>
@@ -235,6 +244,7 @@ export const Stock = ({
         setShowLoader={setShowLoader}
         showAlert={showAlert}
         sucursales={sucursales}
+        handleCreateSetAlmacen={handleCreateSetAlmacen}
       />
     </div>
   );

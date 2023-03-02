@@ -190,6 +190,22 @@ export const NCPF = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newClientProvider.dni_ruc]);
 
+  const handleCreateSetSector = (response: ISector) => {
+    setModalSector(false)
+    setNewClientProvider({
+      ...newClientProvider,
+      sector_id: response._id.$oid
+    })
+  }
+  
+  const handleCreateSetZona = (response: IZone) => {
+    setModalZona(false)
+    setNewClientProvider({
+      ...newClientProvider,
+      zona_id: response._id.$oid
+    })
+  }
+
   return (
     <>
       <div className={styles.row}>
@@ -463,6 +479,7 @@ export const NCPF = ({
         setShowAlert={setShowAlert}
         showAlert={showAlert}
         setShowLoader={setShowLoader}
+        handleCreateSetSector={handleCreateSetSector}
       />
       <NuevaZona
         closeAlertTimeOut={closeAlertTimeOut}
@@ -472,6 +489,7 @@ export const NCPF = ({
         setShowAlert={setShowAlert}
         showAlert={showAlert}
         setShowLoader={setShowLoader}
+        handleCreateSetZona={handleCreateSetZona}
       />
     </>
   );

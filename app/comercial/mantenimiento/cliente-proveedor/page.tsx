@@ -139,7 +139,7 @@ export default function Home() {
     }
     setShowLoader(false);
   };
-  const getSectorsList = async () => {
+  const getSectorsList = async (handleCreateSetSector= Function()) => {
     setShowLoader(true);
     const sectors = await getListaSectoresService(
       getLocalStorageItem("empresa"),
@@ -149,10 +149,11 @@ export default function Home() {
     if (sectors) {
       if (sectors.status === 200) {
         setSectoresList(sectors.json.data);
+        handleCreateSetSector()
       }
     }
   };
-  const getZonesList = async () => {
+  const getZonesList = async (handleCreateSetZona= Function()) => {
     setShowLoader(true);
     const zones = await getListaZonasService(
       getLocalStorageItem("empresa"),
@@ -162,6 +163,7 @@ export default function Home() {
     if (zones) {
       if (zones.status === 200) {
         setZonasList(zones.json.data);
+        handleCreateSetZona()
       }
     }
   };

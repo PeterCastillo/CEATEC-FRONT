@@ -8,7 +8,10 @@ import {
   getLocalStorageItem,
   getTokenFromLocalStorage,
 } from "@/utils/localStorageControl";
-import { INewBox } from "@/interfaces/comercial/mantenimiento/caja/cajaInterfaces";
+import {
+  IBox,
+  INewBox,
+} from "@/interfaces/comercial/mantenimiento/caja/cajaInterfaces";
 import { postCajasService } from "@/services/comercial/mantenimiento/caja/cajaServices";
 import { IBranchOffice } from "@/interfaces/comercial/mantenimiento/empresa/sucursalInterfaces";
 import { SelectDinamico } from "@/components/commons/select/Select";
@@ -26,7 +29,8 @@ export const NuevaCaja = ({
   branchOfficesList,
   userList,
   getBranchOfficesList,
-  getCajasList
+  getCajasList,
+  handleCreateSetCaja,
 }: {
   show: boolean;
   setShowNewClientModal: (data: boolean) => void;
@@ -36,8 +40,9 @@ export const NuevaCaja = ({
   setShowLoader: (status: boolean) => void;
   branchOfficesList: IBranchOffice[];
   userList: IUser[];
-  getBranchOfficesList: () => void
-  getCajasList: () => void
+  getBranchOfficesList: () => void;
+  getCajasList: (handleCreateSetCaja?: () => void) => void;
+  handleCreateSetCaja: (box: IBox) => void;
 }) => {
   const [modalSucursal, setModalSucursal] = useState(false);
   const [newBox, setNewBox] = useState<INewBox>({
@@ -107,7 +112,7 @@ export const NuevaCaja = ({
     setShowLoader(false);
     if (response) {
       if (response.status == 201) {
-        getCajasList()
+        getCajasList(() => handleCreateSetCaja(response.json.data));
         setShowAlert({
           ...showAlert,
           icon: "success",
@@ -128,6 +133,13 @@ export const NuevaCaja = ({
     return closeAlertTimeOut();
   };
 
+  const handleCreateSetSucursal = (sucursal: IBranchOffice) => {
+    setModalSucursal(false);
+    setNewBox({
+      ...newBox,
+      sucursal_id: sucursal._id.$oid,
+    });
+  };
   return (
     <div className={clsx(styles.modal, !show && styles.hidden)}>
       <div className={styles.container}>
@@ -146,7 +158,7 @@ export const NuevaCaja = ({
           </button>
         </div>
         <div className={styles.form}>
-          <div >
+          <div>
             <div>
               <label htmlFor="sucursal_id">Sucursal</label>
               <SelectDinamico
@@ -243,6 +255,7 @@ export const NuevaCaja = ({
           setShowAlert={setShowAlert}
           setShowLoader={setShowLoader}
           showAlert={showAlert}
+          handleCreateSetSucursal={handleCreateSetSucursal}
         />
       </div>
     </div>

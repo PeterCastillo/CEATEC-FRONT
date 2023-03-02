@@ -8,7 +8,10 @@ import {
   getLocalStorageItem,
   getTokenFromLocalStorage,
 } from "@/utils/localStorageControl";
-import { INewBrand } from "@/interfaces/comercial/mantenimiento/grupo-familia-marca-unidad/marcaInterfaces";
+import {
+  IBrand,
+  INewBrand,
+} from "@/interfaces/comercial/mantenimiento/grupo-familia-marca-unidad/marcaInterfaces";
 import { postMarcaService } from "@/services/comercial/mantenimiento/grupo-familia-marca-unidad/marcaServices";
 
 interface INuevaMarca {
@@ -18,7 +21,8 @@ interface INuevaMarca {
   showAlert: IAlert;
   setShowAlert: (alert: IAlert) => void;
   closeAlertTimeOut: () => void;
-  getBrandsList: () => void
+  getBrandsList: (handleCreateSetMarca?: ()=> void) => void;
+  handleCreateSetMarca: (marca: IBrand) => void;
 }
 
 export const NuevaMarca: FC<INuevaMarca> = ({
@@ -28,16 +32,15 @@ export const NuevaMarca: FC<INuevaMarca> = ({
   showAlert,
   setShowAlert,
   closeAlertTimeOut,
-  getBrandsList
+  getBrandsList,
+  handleCreateSetMarca
 }) => {
   const [newBrand, setNewBrand] = useState<INewBrand>({
     descripcion: "",
     empresa_id: getLocalStorageItem("empresa"),
   });
 
-  const handleInputChange = (
-    event: FormEvent<HTMLInputElement>
-  ) => {
+  const handleInputChange = (event: FormEvent<HTMLInputElement>) => {
     const { name, value } = event.currentTarget;
     setNewBrand({
       ...newBrand,
@@ -67,19 +70,21 @@ export const NuevaMarca: FC<INuevaMarca> = ({
     );
     setShowLoader(false);
     if (response) {
-      getBrandsList();
-      setNewBrand({
-        descripcion: "",
-        empresa_id: getLocalStorageItem("empresa"),
-      });;
-      setShowAlert({
-        ...showAlert,
-        icon: "success",
-        title: "Operación exitosa",
-        message: "Marca creado correctamente",
-        show: true,
-      });
-      return closeAlertTimeOut();
+      if (response.status == 201) {
+        getBrandsList(() => handleCreateSetMarca(response.json.data));
+        setNewBrand({
+          descripcion: "",
+          empresa_id: getLocalStorageItem("empresa"),
+        });
+        setShowAlert({
+          ...showAlert,
+          icon: "success",
+          title: "Operación exitosa",
+          message: "Marca creado correctamente",
+          show: true,
+        });
+        return closeAlertTimeOut();
+      }
     }
     setShowAlert({
       ...showAlert,
@@ -109,7 +114,8 @@ export const NuevaMarca: FC<INuevaMarca> = ({
           <div className={styles.row}>
             <div className={clsx(styles.f_g, styles.f_2)}>
               <label htmlFor="descripcion">Descripción</label>
-              <input autoComplete="off"
+              <input
+                autoComplete="off"
                 id="descripcion"
                 name="descripcion"
                 type="text"

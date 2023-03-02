@@ -8,7 +8,7 @@ import {
   getLocalStorageItem,
   getTokenFromLocalStorage,
 } from "@/utils/localStorageControl";
-import { INewWareHouse } from "@/interfaces/comercial/mantenimiento/empresa/almacenInterfaces";
+import { INewWareHouse, IWareHouse } from "@/interfaces/comercial/mantenimiento/empresa/almacenInterfaces";
 import { postAlmacenesService } from "@/services/comercial/mantenimiento/empresa/almacenService";
 import { NuevaSucursal } from "./NuevaSucursal";
 import { SelectDinamico } from "@/components/commons/select/Select";
@@ -21,9 +21,10 @@ interface INuevoAlmacen {
   showAlert: IAlert;
   setShowAlert: (alert: IAlert) => void;
   closeAlertTimeOut: () => void;
-  getWareHousesList: () => void;
+  getWareHousesList: (handleCreateSetAlmacen?: ()=> void) => void;
   getBranchOfficesList: () => void;
   sucursales: IBranchOffice[]
+  handleCreateSetAlmacen: (almacen:IWareHouse) => void
 }
 
 export const NuevoAlmacen: FC<INuevoAlmacen> = ({
@@ -35,6 +36,7 @@ export const NuevoAlmacen: FC<INuevoAlmacen> = ({
   closeAlertTimeOut,
   getWareHousesList,
   getBranchOfficesList,
+  handleCreateSetAlmacen,
   sucursales
 }) => {
   const [modalSucursal, setModalSucursal] = useState(false);
@@ -89,7 +91,7 @@ export const NuevoAlmacen: FC<INuevoAlmacen> = ({
     setShowLoader(false);
     if (response) {
       if (response.status === 201) {
-        getWareHousesList();
+        getWareHousesList(()=> handleCreateSetAlmacen(response.json.data));
         setNewWareHouse({
           empresa_id: getLocalStorageItem("empresa"),
           descripcion: "",
@@ -115,6 +117,14 @@ export const NuevoAlmacen: FC<INuevoAlmacen> = ({
     });
     return closeAlertTimeOut();
   };
+
+  const handleCreateSetSucursal = (sucursal:IBranchOffice) => {
+    setModalSucursal(false)
+    setNewWareHouse({
+      ...newWareHouse,
+      sucursal_id: sucursal._id.$oid
+    })
+  }
 
   return (
     <div className={clsx(styles.modal, !modal && styles.hidden)}>
@@ -175,6 +185,7 @@ export const NuevoAlmacen: FC<INuevoAlmacen> = ({
           showAlert={showAlert}
           closeAlertTimeOut={closeAlertTimeOut}
           getBranchOfficesList={getBranchOfficesList}
+          handleCreateSetSucursal={handleCreateSetSucursal}
         />
       </div>
     </div>

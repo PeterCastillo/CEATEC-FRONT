@@ -4,6 +4,10 @@ import { clsx } from "@/lib/clsx";
 import styles from "@/styles/Form.module.scss";
 import { INewBox } from "@/interfaces/comercial/mantenimiento/caja/cajaInterfaces";
 import { IUser } from "@/interfaces/autenticacion/usuariosInterface";
+import { SelectDinamico } from "@/components/commons/select/Select";
+import { useState } from "react";
+import { NuevaSucursal } from "./NuevaSucursal";
+import { IAlert } from "@/interfaces/componentsInterfaces";
 
 interface INuevaCajaForm {
   branchOfficesList: IBranchOffice[];
@@ -11,6 +15,11 @@ interface INuevaCajaForm {
   getBoxesList: (data: string) => void;
   setNewBox: (data: INewBox) => void;
   newBox: INewBox;
+  getBranchOfficesList:() => void
+  showAlert: IAlert
+  closeAlertTimeOut: () => void
+  setShowLoader: (state:boolean) => void
+  setShowAlert: (state:IAlert) => void
 }
 
 export const NuevaCajaForm: FC<INuevaCajaForm> = ({
@@ -18,7 +27,14 @@ export const NuevaCajaForm: FC<INuevaCajaForm> = ({
   usersList,
   setNewBox,
   newBox,
+  getBranchOfficesList,
+  closeAlertTimeOut,
+  setShowAlert,
+  setShowLoader,
+  showAlert,
+  getBoxesList
 }) => {
+  const [modalSucursal, setModalSucursal] = useState(false);
   const handleInputChange = (event: FormEvent<HTMLInputElement>) => {
     const { name, value } = event.currentTarget;
     setNewBox({
@@ -34,27 +50,38 @@ export const NuevaCajaForm: FC<INuevaCajaForm> = ({
       [name]: value,
     });
   };
+
+  const handleSucursalChange = (value: string) => {
+    setNewBox({
+      ...newBox,
+      sucursal_id: value,
+    });
+  };
+
+  const handleCreateSetSucursal = (sucursal:IBranchOffice) => {
+    setModalSucursal(false)
+    setNewBox({
+      ...newBox,
+      sucursal_id: sucursal._id.$oid
+    })
+  }
+
   return (
     <>
       <div className={styles.row}>
         <div className={clsx(styles.f_g, styles.f_2)}>
           <label htmlFor="sucursal_id">Sucursal</label>
-          <select
-            id="sucursal_id"
-            name="sucursal_id"
-            onChange={handleSelectChange}
+          <SelectDinamico
+            dataList={branchOfficesList.map((item) => {
+              return {
+                id: item._id.$oid,
+                descripcion: item.descripcion,
+              };
+            })}
+            handleChange={handleSucursalChange}
+            setModal={setModalSucursal}
             value={newBox.sucursal_id}
-          >
-            <option hidden value={""}>
-              Seleccionar grupo
-            </option>
-            {branchOfficesList &&
-              branchOfficesList.map((branche) => (
-                <option value={branche._id.$oid} key={branche._id.$oid}>
-                  {branche.descripcion}
-                </option>
-              ))}
-          </select>
+          />
         </div>
       </div>
       <div className={styles.row}>
@@ -130,6 +157,17 @@ export const NuevaCajaForm: FC<INuevaCajaForm> = ({
           />
         </div>
       </div>
+      <NuevaSucursal
+          closeAlertTimeOut={closeAlertTimeOut}
+          getBranchOfficesList={getBranchOfficesList}
+          modal={modalSucursal}
+          setModal={setModalSucursal}
+          setShowAlert={setShowAlert}
+          setShowLoader={setShowLoader}
+          showAlert={showAlert}
+          handleCreateSetSucursal={handleCreateSetSucursal}
+        />
     </>
+    
   );
 };

@@ -4,12 +4,21 @@ import { clsx } from "@/lib/clsx";
 import { IBranchOffice } from "@/interfaces/comercial/mantenimiento/empresa/sucursalInterfaces";
 import { IBox } from "@/interfaces/comercial/mantenimiento/caja/cajaInterfaces";
 import { IUser } from "@/interfaces/autenticacion/usuariosInterface";
+import { SelectDinamico } from "@/components/commons/select/Select";
+import { useState } from "react"
+import { NuevaSucursal } from "./NuevaSucursal";
+import { IAlert } from "@/interfaces/componentsInterfaces";
 
 interface IEditableCajaForm {
   newEditableBox: IBox;
   setNewEditableBox: (data: IBox) => void;
   usersList: IUser[];
   branchOfficesList: IBranchOffice[];
+  getBranchOfficesList:() => void
+  showAlert: IAlert
+  closeAlertTimeOut: () => void
+  setShowLoader: (state:boolean) => void
+  setShowAlert: (state:IAlert) => void
 }
 
 export const EditableCajaForm: FC<IEditableCajaForm> = ({
@@ -17,7 +26,13 @@ export const EditableCajaForm: FC<IEditableCajaForm> = ({
   setNewEditableBox,
   usersList,
   branchOfficesList,
+  getBranchOfficesList,
+  closeAlertTimeOut,
+  setShowAlert,
+  setShowLoader,
+  showAlert,
 }) => {
+  const [modalSucursal, setModalSucursal] = useState(false);
   const handleInputChange = (
     event: FormEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -28,27 +43,37 @@ export const EditableCajaForm: FC<IEditableCajaForm> = ({
     });
   };
 
+  const handleSucursalChange = (value: string) => {
+    setNewEditableBox({
+      ...newEditableBox,
+      sucursal_id: value,
+    });
+  };
+
+  const handleCreateSetSucursal = (sucursal:IBranchOffice) => {
+    setModalSucursal(false)
+    setNewEditableBox({
+      ...newEditableBox,
+      sucursal_id: sucursal._id.$oid
+    })
+  }
+
   return (
     <>
       <div className={styles.row}>
         <div className={clsx(styles.f_g, styles.f_2)}>
           <label htmlFor="sucursal_id">Sucursal</label>
-          <select
-            id="sucursal_id"
-            name="sucursal_id"
-            onChange={handleInputChange}
+          <SelectDinamico
+            dataList={branchOfficesList.map((item) => {
+              return {
+                id: item._id.$oid,
+                descripcion: item.descripcion,
+              };
+            })}
+            handleChange={handleSucursalChange}
+            setModal={setModalSucursal}
             value={newEditableBox.sucursal_id}
-          >
-            <option hidden value={""}>
-              Seleccionar grupo
-            </option>
-            {branchOfficesList &&
-              branchOfficesList.map((branche) => (
-                <option value={branche._id.$oid} key={branche._id.$oid}>
-                  {branche.descripcion}
-                </option>
-              ))}
-          </select>
+          />
         </div>
       </div>
       <div className={styles.row}>
@@ -120,6 +145,16 @@ export const EditableCajaForm: FC<IEditableCajaForm> = ({
           />
         </div>
       </div>
+      <NuevaSucursal
+          closeAlertTimeOut={closeAlertTimeOut}
+          getBranchOfficesList={getBranchOfficesList}
+          modal={modalSucursal}
+          setModal={setModalSucursal}
+          setShowAlert={setShowAlert}
+          setShowLoader={setShowLoader}
+          showAlert={showAlert}
+          handleCreateSetSucursal={handleCreateSetSucursal}
+        />
     </>
   );
 };

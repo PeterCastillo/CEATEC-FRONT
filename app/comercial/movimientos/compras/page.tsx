@@ -194,7 +194,7 @@ export default function Home() {
       }
     }
   };
-  const getSucursalesList = async () => {
+  const getSucursalesList = async (handleCreateSetSucursal= Function()) => {
     setShowLoader(true);
     const response = await getListaSucursalService(
       getLocalStorageItem("empresa"),
@@ -203,6 +203,7 @@ export default function Home() {
     if (response) {
       if (response.status === 200) {
         setSucursales(response.json.data);
+        handleCreateSetSucursal()
       }
     }
     setShowLoader(false);
@@ -296,7 +297,7 @@ export default function Home() {
     }
     setShowLoader(false);
   };
-  const getAlmacenesList = async () => {
+  const getAlmacenesList = async (handleCreateSetAlmacen= Function()) => {
     setShowLoader(true);
     const response = await getListaAlmacenesService(
       getLocalStorageItem("empresa"),
@@ -306,11 +307,12 @@ export default function Home() {
     if (response) {
       if (response.status == 200) {
         setAlmacenes(response.json.data);
+        handleCreateSetAlmacen()
       }
     }
   };
 
-  const getProveedoresList = async () => {
+  const getProveedoresList = async (handleCreateSetProveefdor = Function()) => {
     setShowLoader(true);
     const response = await getListaClienteProveedorService(
       getLocalStorageItem("empresa"),
@@ -320,6 +322,7 @@ export default function Home() {
     if (response) {
       if (response.status == 200) {
         setProveedores(response.json.data);
+        handleCreateSetProveefdor()
       }
     }
   };
@@ -372,7 +375,7 @@ export default function Home() {
     }
     setShowLoader(false);
   };
-  const getSectorsList = async () => {
+  const getSectorsList = async (handleCreateSetSector= Function()) => {
     setShowLoader(true);
     const sectors = await getListaSectoresService(
       getLocalStorageItem("empresa"),
@@ -382,10 +385,11 @@ export default function Home() {
     if (sectors) {
       if (sectors.status === 200) {
         setSectorsList(sectors.json.data);
+        handleCreateSetSector()
       }
     }
   };
-  const getZonesList = async () => {
+  const getZonesList = async (handleCreateSetZona= Function()) => {
     setShowLoader(true);
     const zones = await getListaZonasService(
       getLocalStorageItem("empresa"),
@@ -395,6 +399,7 @@ export default function Home() {
     if (zones) {
       if (zones.status === 200) {
         setZonesList(zones.json.data);
+        handleCreateSetZona()
       }
     }
   };
@@ -426,7 +431,6 @@ export default function Home() {
     getStateArticles();
     getFamiliesList();
     getGroupsList();
-    getZonesList();
     getBrandsList();
     getSucursalesList();
     getSegmentoList();

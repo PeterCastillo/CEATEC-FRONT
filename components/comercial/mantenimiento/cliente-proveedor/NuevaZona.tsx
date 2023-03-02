@@ -1,16 +1,14 @@
-import { INewSector } from "@/interfaces/comercial/mantenimiento/empresa/sectorInterface";
 import { clsx } from "@/lib/clsx";
 import { FormEvent, FC, useState } from "react";
 import styles from "./NuevoSector.module.scss";
 import { MdClose } from "react-icons/md";
 import { FaPlus } from "react-icons/fa";
 import { IAlert } from "@/interfaces/componentsInterfaces";
-import { postSectorService } from "@/services/comercial/mantenimiento/empresa/sectorService";
 import {
   getLocalStorageItem,
   getTokenFromLocalStorage,
 } from "@/utils/localStorageControl";
-import { INewZone } from "@/interfaces/comercial/mantenimiento/empresa/zonaInterfaces";
+import { INewZone, IZone } from "@/interfaces/comercial/mantenimiento/empresa/zonaInterfaces";
 import { postZonasService } from "@/services/comercial/mantenimiento/empresa/zonaService";
 
 interface INuevaZona {
@@ -20,7 +18,8 @@ interface INuevaZona {
   showAlert: IAlert;
   setShowAlert: (alert: IAlert) => void;
   closeAlertTimeOut: () => void;
-  getZonesList: () => void;
+  getZonesList: (handleCreateSetZona?: () => void) => void;
+  handleCreateSetZona: (zona: IZone) => void
 }
 
 export const NuevaZona: FC<INuevaZona> = ({
@@ -31,6 +30,7 @@ export const NuevaZona: FC<INuevaZona> = ({
   setShowAlert,
   closeAlertTimeOut,
   getZonesList,
+  handleCreateSetZona
 }) => {
   const [newZone, setNewZone] = useState<INewZone>({
     zona: "",
@@ -72,7 +72,7 @@ export const NuevaZona: FC<INuevaZona> = ({
     setShowLoader(false);
     if (response) {
       if (response.status === 201) {
-        getZonesList();
+        getZonesList(()=> handleCreateSetZona(response.json.data));
         setNewZone({
           descripcion: "",
           zona: "",

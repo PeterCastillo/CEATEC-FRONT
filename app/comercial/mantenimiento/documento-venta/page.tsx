@@ -97,7 +97,7 @@ export default function Home() {
     }
     setShowLoader(false);
   };
-  const getSucursalesList = async () => {
+  const getSucursalesList = async (handleCreateSetSucursal = Function()) => {
     setShowLoader(true);
     const response = await getListaSucursalService(
       getLocalStorageItem("empresa"),
@@ -106,6 +106,7 @@ export default function Home() {
     if (response) {
       if (response.status === 200) {
         setBranchOfficesList(response.json.data);
+        handleCreateSetSucursal()
       }
     }
     setShowLoader(false);
@@ -125,7 +126,7 @@ export default function Home() {
     }
   };
 
-  const getCajasList = async () => {
+  const getCajasList = async (handleCreateSetCaja = Function()) => {
     setShowLoader(true);
     const cajas = await getListaCajasService(
       getLocalStorageItem("empresa"),
@@ -134,8 +135,8 @@ export default function Home() {
     setShowLoader(false);
     if (cajas) {
       if (cajas.status === 200) {
-        console.log(cajas.json);
         setCajasList(cajas.json.data);
+        handleCreateSetCaja()
       }
     }
   };

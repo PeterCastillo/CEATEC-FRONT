@@ -11,7 +11,10 @@ import {
 import { IGroup } from "@/interfaces/comercial/mantenimiento/grupo-familia-marca-unidad/grupoInterfaces";
 import { SelectDinamico } from "@/components/commons/select/Select";
 import { NuevoGrupo } from "./NuevoGrupo";
-import { INewFamily } from "@/interfaces/comercial/mantenimiento/grupo-familia-marca-unidad/familiaInterfaces";
+import {
+  IFamily,
+  INewFamily,
+} from "@/interfaces/comercial/mantenimiento/grupo-familia-marca-unidad/familiaInterfaces";
 import { postFamiliaService } from "@/services/comercial/mantenimiento/grupo-familia-marca-unidad/familiaServices";
 
 interface INuevaFamilia {
@@ -23,7 +26,8 @@ interface INuevaFamilia {
   closeAlertTimeOut: () => void;
   getGroupsList: () => void;
   grupos: IGroup[];
-  getFamilyList: () => void;
+  handleCreateSetFamilia: (familia: IFamily) => void;
+  getFamilyList: (handleCreateSetFamilia?: () => void) => void;
 }
 
 export const NuevaFamilia: FC<INuevaFamilia> = ({
@@ -36,6 +40,7 @@ export const NuevaFamilia: FC<INuevaFamilia> = ({
   getGroupsList,
   grupos,
   getFamilyList,
+  handleCreateSetFamilia,
 }) => {
   const [modalGrupo, setModalGrupo] = useState(false);
   const [newFamily, setNewFamily] = useState<INewFamily>({
@@ -53,8 +58,8 @@ export const NuevaFamilia: FC<INuevaFamilia> = ({
   });
   const handleInputChange = (event: FormEvent<HTMLInputElement>) => {
     const { name, value } = event.currentTarget;
-    if(value.includes(".")){
-      return
+    if (value.includes(".")) {
+      return;
     }
     if (Number.isNaN(Number(value))) {
       if (
@@ -119,28 +124,30 @@ export const NuevaFamilia: FC<INuevaFamilia> = ({
     );
     setShowLoader(false);
     if (response) {
-      getFamilyList();
-      setNewFamily({
-        considerar_en_venta: false,
-        cuenta_compra_debe: "6011",
-        cuenta_venta_debe: "7011",
-        cuenta_compra_haber: "4212",
-        cuenta_venta_haber: "1212",
-        cuenta_mercaderia: "6911",
-        cuenta_prod_manufac: "2011",
-        descripcion: "",
-        empresa_id: getLocalStorageItem("empresa"),
-        exonerado_igv: false,
-        grupo_id: "",
-      });
-      setShowAlert({
-        ...showAlert,
-        icon: "success",
-        title: "Operación exitosa",
-        message: "Familia creado correctamente",
-        show: true,
-      });
-      return closeAlertTimeOut();
+      if (response.status == 201) {
+        getFamilyList(() => handleCreateSetFamilia(response.json.data));
+        setNewFamily({
+          considerar_en_venta: false,
+          cuenta_compra_debe: "6011",
+          cuenta_venta_debe: "7011",
+          cuenta_compra_haber: "4212",
+          cuenta_venta_haber: "1212",
+          cuenta_mercaderia: "6911",
+          cuenta_prod_manufac: "2011",
+          descripcion: "",
+          empresa_id: getLocalStorageItem("empresa"),
+          exonerado_igv: false,
+          grupo_id: "",
+        });
+        setShowAlert({
+          ...showAlert,
+          icon: "success",
+          title: "Operación exitosa",
+          message: "Familia creado correctamente",
+          show: true,
+        });
+        return closeAlertTimeOut();
+      }
     }
     setShowAlert({
       ...showAlert,
@@ -150,6 +157,14 @@ export const NuevaFamilia: FC<INuevaFamilia> = ({
       show: true,
     });
     return closeAlertTimeOut();
+  };
+
+  const handleCreateSetGrupo = (response: IGroup) => {
+    setModalGrupo(false);
+    setNewFamily({
+      ...newFamily,
+      grupo_id: response._id.$oid,
+    });
   };
 
   return (
@@ -170,7 +185,8 @@ export const NuevaFamilia: FC<INuevaFamilia> = ({
           <div className={styles.row}>
             <div className={styles.f_g}>
               <label htmlFor="descripcion">Descripción</label>
-              <input autoComplete="off"
+              <input
+                autoComplete="off"
                 id="descripcion"
                 name="descripcion"
                 type="text"
@@ -199,7 +215,8 @@ export const NuevaFamilia: FC<INuevaFamilia> = ({
           <div className={styles.row}>
             <div className={styles.f_g}>
               <label htmlFor="cuenta_compra_debe">Cuenta compra (D)</label>
-              <input autoComplete="off"
+              <input
+                autoComplete="off"
                 id="cuenta_compra_debe"
                 name="cuenta_compra_debe"
                 type="text"
@@ -210,7 +227,8 @@ export const NuevaFamilia: FC<INuevaFamilia> = ({
             </div>
             <div className={styles.f_g}>
               <label htmlFor="cuenta_compra_haber">Cuenta compra (H)</label>
-              <input autoComplete="off"
+              <input
+                autoComplete="off"
                 id="cuenta_compra_haber"
                 name="cuenta_compra_haber"
                 type="text"
@@ -223,7 +241,8 @@ export const NuevaFamilia: FC<INuevaFamilia> = ({
           <div className={styles.row}>
             <div className={styles.f_g}>
               <label htmlFor="cuenta_venta_debe">Cuenta venta (D)</label>
-              <input autoComplete="off"
+              <input
+                autoComplete="off"
                 id="cuenta_venta_debe"
                 name="cuenta_venta_debe"
                 type="text"
@@ -234,7 +253,8 @@ export const NuevaFamilia: FC<INuevaFamilia> = ({
             </div>
             <div className={styles.f_g}>
               <label htmlFor="cuenta_venta_haber">Cuenta venta (H)</label>
-              <input autoComplete="off"
+              <input
+                autoComplete="off"
                 id="cuenta_venta_haber"
                 name="cuenta_venta_haber"
                 type="text"
@@ -252,7 +272,8 @@ export const NuevaFamilia: FC<INuevaFamilia> = ({
           <div className={styles.row}>
             <div className={styles.f_g}>
               <label htmlFor="cuenta_mercaderia">Cuenta mercaderia</label>
-              <input autoComplete="off"
+              <input
+                autoComplete="off"
                 id="cuenta_mercaderia"
                 name="cuenta_mercaderia"
                 type="text"
@@ -265,7 +286,8 @@ export const NuevaFamilia: FC<INuevaFamilia> = ({
               <label htmlFor="cuenta_prod_manufac">
                 Cuenta producto manofactura
               </label>
-              <input autoComplete="off"
+              <input
+                autoComplete="off"
                 id="cuenta_prod_manufac"
                 name="cuenta_prod_manufac"
                 type="text"
@@ -278,7 +300,8 @@ export const NuevaFamilia: FC<INuevaFamilia> = ({
           <div>
             <div className={styles.f_g}>
               <label htmlFor="exonerado_igv">
-                <input autoComplete="off"
+                <input
+                  autoComplete="off"
                   id="exonerado_igv"
                   name="exonerado_igv"
                   type="checkbox"
@@ -293,7 +316,8 @@ export const NuevaFamilia: FC<INuevaFamilia> = ({
           <div>
             <div className={styles.f_g}>
               <label htmlFor="considerar_en_venta">
-                <input autoComplete="off"
+                <input
+                  autoComplete="off"
                   id="considerar_en_venta"
                   name="considerar_en_venta"
                   type="checkbox"
@@ -313,6 +337,7 @@ export const NuevaFamilia: FC<INuevaFamilia> = ({
             setShowAlert={setShowAlert}
             setShowLoader={setShowLoader}
             showAlert={showAlert}
+            handleCreateSetGrupo={handleCreateSetGrupo}
           />
         </div>
       </div>

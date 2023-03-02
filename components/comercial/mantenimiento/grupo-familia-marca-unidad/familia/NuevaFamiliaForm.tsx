@@ -74,6 +74,7 @@ export const NuevaFamiliaForm: FC<INuevaFamiliaForm> = ({
     });
   };
   const handleCreateSetGroup = (grupo:IGroup) => {
+    setModalGrupo(false)
     setNew({
       ...newFamilia,
       grupo_id: grupo._id.$oid

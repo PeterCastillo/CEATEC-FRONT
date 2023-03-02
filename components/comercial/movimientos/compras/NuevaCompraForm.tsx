@@ -27,7 +27,6 @@ import { IEstadoArticulo } from "@/interfaces/comercial/extras/estadoArticuloInt
 import { IBrand } from "@/interfaces/comercial/mantenimiento/grupo-familia-marca-unidad/marcaInterfaces";
 import { SelectDataTable } from "./SelectDataTable";
 import { NuevoAlmacen } from "./NuevoAlmacen";
-import { NuevaUnidad } from "./NuevaUnidad";
 import { IBranchOffice } from "@/interfaces/comercial/mantenimiento/empresa/sucursalInterfaces";
 import { EditarArticulo } from "./EditarArticulo";
 import { EditCliente } from "./EditCliente";
@@ -103,7 +102,6 @@ export const NCF: FC<INuevaCompraForm> = ({
   const [modalAdmPrecios, setModalAdmPrecios] = useState(false);
   const [articuloId, setArticulId] = useState("");
   const [modalAlmacen, setModalAlmacen] = useState(false);
-  const [modalUnidad, setModalUnidad] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showClientModal, setShowClientModal] = useState(false);
   const [showArticleModal, setShowArticleModal] = useState(false);
@@ -219,6 +217,7 @@ export const NCF: FC<INuevaCompraForm> = ({
   };
 
   const handleSelectArticle = (articulo: IArticuloCompra) => {
+    console.log(articulo);
     setNewCompras({
       ...newCompras,
       articulos: [...newCompras.articulos, articulo],
@@ -232,7 +231,7 @@ export const NCF: FC<INuevaCompraForm> = ({
     });
   };
 
-  const handleSetProveedor = (proveedor: IClientProvider) => {
+  const handleSelectProveedor = (proveedor: IClientProvider) => {
     setNewCompras({
       ...newCompras,
       proveedor_id: proveedor._id.$oid,
@@ -426,7 +425,8 @@ export const NCF: FC<INuevaCompraForm> = ({
   };
 
   const handleCreateSetNewUnidad = (newPrecio: IArticlePrecios) => {
-    const id = Number(index)
+    setModalAdmPrecios(false);
+    const id = Number(index);
     setNewCompras({
       ...newCompras,
       articulos: newCompras.articulos.map((item, index) =>
@@ -435,10 +435,57 @@ export const NCF: FC<INuevaCompraForm> = ({
               ...item,
               unidad_abreviatura: newPrecio.unidad_abreviatura,
               unidad_descripcion: newPrecio.unidad_descripcion,
-              unidad_valor: newPrecio.unidad_valor
+              unidad_valor: newPrecio.unidad_valor,
             }
           : item
       ),
+    });
+  };
+
+  const handleCreateSetAlmacen = (almacen: IWareHouse) => {
+    setModalAlmacen(false);
+    const id = Number(index);
+    setNewCompras({
+      ...newCompras,
+      articulos: newCompras.articulos.map((item, index) =>
+        index == id
+          ? {
+              ...item,
+              almacen_id: almacen._id.$oid,
+              almacen_nombre: almacen.descripcion,
+            }
+          : item
+      ),
+    });
+  };
+
+  const handleCreateSetProveedor = (proveedor: IClientProvider) => {
+    setShowNewClientModal(false);
+    setShowClientModal(false);
+    handleSelectProveedor(proveedor);
+  };
+
+  const handleCreateSetArticulo = (articulo: IArticle) => {
+    setShowArticleModal(false);
+    setShowModal(false);
+    handleSelectArticle({
+      articulo_id: articulo._id.$oid,
+      articulo_nombre: articulo.nombre_articulo,
+      almacen_id: "",
+      almacen_nombre: "",
+      cantidad: "",
+      costo: "",
+      total: "",
+      unidad_descripcion:
+        articulo.precios.length > 0
+          ? articulo.precios[0].unidad_descripcion
+          : "",
+      unidad_abreviatura:
+        articulo.precios.length > 0
+          ? articulo.precios[0].unidad_abreviatura
+          : "",
+      unidad_valor:
+        articulo.precios.length > 0 ? articulo.precios[0].unidad_valor : "",
     });
   };
 
@@ -638,6 +685,17 @@ export const NCF: FC<INuevaCompraForm> = ({
     }
   };
 
+  const handleModalAlmacen = (id: string, index_articulo: number) => {
+    setModalAlmacen(true);
+    setArticulId(id);
+    const item = newCompras.articulos.find(
+      (item, index) => index == index_articulo
+    );
+    if (item) {
+      setIndex(index_articulo.toString());
+    }
+  };
+
   const handleDocumentoCompra = () => {
     if (newCompras.documento_compra.includes("-")) {
       const newCorrelativo = "0"
@@ -802,20 +860,25 @@ export const NCF: FC<INuevaCompraForm> = ({
                   <td>{articulo.articulo_nombre}</td>
                   <td>
                     <SelectDataTable
-                      dataList={articulos
-                        .filter(
+                      dataList={
+                        articulos.filter(
                           (item) => item._id.$oid == articulo.articulo_id
-                        )[0]
-                        .precios.map((item) => {
-                          return {
-                            id: item.unidad_descripcion,
-                            descripcion: item.unidad_descripcion,
-                            sub_nombre: item.unidad_descripcion,
-                          };
-                        })}
+                        ).length > 0
+                          ? articulos
+                              .filter(
+                                (item) => item._id.$oid == articulo.articulo_id
+                              )[0]
+                              .precios.map((item) => {
+                                return {
+                                  id: item.unidad_descripcion,
+                                  descripcion: item.unidad_descripcion,
+                                  sub_nombre: item.unidad_descripcion,
+                                };
+                              })
+                          : []
+                      }
                       handleChange={handleChangeUnidad}
                       id={index}
-                      setModal={setModalUnidad}
                       value={articulo.unidad_descripcion}
                       articuloId={articulo.articulo_id}
                       handleModalAdmPrecios={handleModalAdmPrecios}
@@ -833,10 +896,9 @@ export const NCF: FC<INuevaCompraForm> = ({
                       })}
                       handleChange={handleChangeAlmacen}
                       id={index}
-                      setModal={setModalAlmacen}
                       value={articulo.almacen_id}
                       articuloId={articulo.articulo_id}
-                      handleModalAdmPrecios={handleModalAdmPrecios}
+                      handleModalAdmPrecios={handleModalAlmacen}
                       adm={false}
                     />
                   </td>
@@ -1051,6 +1113,7 @@ export const NCF: FC<INuevaCompraForm> = ({
           getBrandsList={getBrandsList}
           getGroupsList={getGroupsList}
           segmentosList={segmentosList}
+          handleCreateSetArticulo={handleCreateSetArticulo}
         />
 
         <EditarArticulo
@@ -1090,13 +1153,14 @@ export const NCF: FC<INuevaCompraForm> = ({
           getProveedoresList={getProveedoresList}
           getSectorsList={getSectorsList}
           getZonesList={getZonesList}
+          handleCreateSetProveefdor={handleCreateSetProveedor}
         />
         <Cliente
           show={showClientModal}
           setShowClientModal={setShowClientModal}
           setShowNewClientModal={setShowNewClientModal}
           proveedores={proveedores}
-          handleSetProveedor={handleSetProveedor}
+          handleSetProveedor={handleSelectProveedor}
           closeAlertTimeOut={closeAlertTimeOut}
           setShowAlert={setShowAlert}
           showAlert={showAlert}
@@ -1131,17 +1195,8 @@ export const NCF: FC<INuevaCompraForm> = ({
           setShowLoader={setShowLoader}
           showAlert={showAlert}
           setShowAlert={setShowAlert}
+          handleCreateSetAlmacen={handleCreateSetAlmacen}
         />
-        <NuevaUnidad
-          closeAlertTimeOut={closeAlertTimeOut}
-          modal={modalUnidad}
-          setModal={setModalUnidad}
-          setShowLoader={setShowLoader}
-          showAlert={showAlert}
-          setShowAlert={setShowAlert}
-          getUnitsList={getUnitsList}
-        />
-
         <ADMPA
           articuloId={articuloId}
           articulos={articulos}

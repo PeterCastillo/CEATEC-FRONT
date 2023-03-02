@@ -124,9 +124,9 @@ export default function Home() {
             <button
               type="button"
               onClick={handleRestartArticulosDeleted}
-              className={styles.save}
+              className={styles.create}
             >
-              <FaPen /> Restaurar Producto
+              <FaPen /> Restaurar articulos
             </button>
           </>
         );

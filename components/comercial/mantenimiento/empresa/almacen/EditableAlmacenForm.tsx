@@ -47,6 +47,14 @@ export const EditableAlmacenForm: FC<IEditableAlmacenForm> = ({
     });
   };
 
+  const handleCreateSetSucursal = (response: IBranchOffice) => {
+    setModalSucursal(false)
+    setNewEditable({
+      ...newEditable,
+      sucursal_id: response._id.$oid
+    })
+  }
+
   return (
     <>
       <div className={styles.row}>
@@ -95,6 +103,7 @@ export const EditableAlmacenForm: FC<IEditableAlmacenForm> = ({
         showAlert={showAlert}
         closeAlertTimeOut={closeAlertTimeOut}
         getBranchOfficesList={getBranchOfficesList}
+        handleCreateSetSucursal={handleCreateSetSucursal}
       />
     </>
   );

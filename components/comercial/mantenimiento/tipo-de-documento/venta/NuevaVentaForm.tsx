@@ -53,20 +53,20 @@ export const NuevaVentaForm: FC<INuevaVentaForm> = ({
     });
   };
 
-  const handleSelectChange = (event: FormEvent<HTMLSelectElement>) => {
-    const { name, value } = event.currentTarget;
-    setNewTipoDocumentoVenta({
-      ...newTipoDocumentoVenta,
-      [name]: value,
-    });
-  };
-
   const handleCajaChange = (value: string) => {
     setNewTipoDocumentoVenta({
       ...newTipoDocumentoVenta,
       caja_id: value,
     });
   };
+
+  const handleCreateSetCaja = (caja: IBox) => {
+    setModalCajas(false)
+    setNewTipoDocumentoVenta({
+      ...newTipoDocumentoVenta,
+      caja_id: caja._id.$oid
+    })
+  }
 
   return (
     <>
@@ -152,6 +152,7 @@ export const NuevaVentaForm: FC<INuevaVentaForm> = ({
         showAlert={showAlert}
         userList={userList}
         getCajasList={getCajasList}
+        handleCreateSetCaja={handleCreateSetCaja}
       />
     </>
   );

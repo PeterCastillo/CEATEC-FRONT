@@ -15,7 +15,6 @@ interface ISelectDataTable {
   handleChange: (value: string, id: number) => void;
   value: string;
   id: number;
-  setModal: (state: boolean) => void;
   articuloId: string;
   handleModalAdmPrecios: (id: string, index: number) => void;
   adm: boolean;
@@ -26,7 +25,6 @@ export const SelectDataTable: FC<ISelectDataTable> = ({
   dataList,
   id,
   handleChange,
-  setModal,
   handleModalAdmPrecios,
   articuloId,
   adm,
@@ -142,7 +140,7 @@ export const SelectDataTable: FC<ISelectDataTable> = ({
               )}
             </div>
             {!adm && (
-              <button className={style.create} onClick={() => setModal(true)}>
+              <button className={style.create} onClick={() => handleModalAdmPrecios(articuloId, id)}>
                 <FaPlus /> Crear
               </button>
             )}

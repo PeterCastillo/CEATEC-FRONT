@@ -221,7 +221,7 @@ export default function Home() {
     setShowLoader(false);
   };
 
-  const getSucursalesList = async () => {
+  const getSucursalesList = async (handleCreateSetSucursal=Function()) => {
     setShowLoader(true);
     const response = await getListaSucursalService(
       getLocalStorageItem("empresa"),
@@ -229,13 +229,14 @@ export default function Home() {
     );
     if (response) {
       if (response.status === 200) {
+        handleCreateSetSucursal()
         setSucursales(response.json.data);
       }
     }
     setShowLoader(false);
   };
 
-  const getGroupsList = async () => {
+  const getGroupsList = async (handleCreateSetGrupo= Function()) => {
     setShowLoader(true);
     const groups = await getListaGrupoService(
       getLocalStorageItem("empresa"),
@@ -244,6 +245,7 @@ export default function Home() {
     if (groups) {
       if (groups.status === 200) {
         setGroupsList(groups.json.data);
+        handleCreateSetGrupo()
       }
     }
     setShowLoader(false);
@@ -262,7 +264,7 @@ export default function Home() {
     setShowLoader(false);
   };
 
-  const getBrandsList = async () => {
+  const getBrandsList = async (handleCreateSetMarca = Function()) => {
     setShowLoader(true);
     const response = await getListaMarcaService(
       getLocalStorageItem("empresa"),
@@ -270,6 +272,7 @@ export default function Home() {
     );
     if (response) {
       if (response.status === 200) {
+        handleCreateSetMarca()
         setBrandsList(response.json.data);
       }
     }
@@ -289,7 +292,7 @@ export default function Home() {
     }
     setShowLoader(false);
   };
-  const getAlmacenesList = async () => {
+  const getAlmacenesList = async (handleCreateSetAlmacen=Function()) => {
     setShowLoader(true);
     const response = await getListaAlmacenesService(
       getLocalStorageItem("empresa"),
@@ -298,6 +301,7 @@ export default function Home() {
     if (response) {
       if (response.status === 200) {
         setAlmacenesList(response.json.data);
+        handleCreateSetAlmacen()
       }
     }
     setShowLoader(false);
@@ -531,7 +535,18 @@ export default function Home() {
       descripcion_utilidad: "",
       empresa_id: getLocalStorageItem("empresa"),
       expira: "",
-      precios: [],
+      precios: [{
+        unidad_descripcion: "UNIDAD",
+        unidad_abreviatura: "UND",
+        unidad_valor: 1,
+        costo: 0,
+        precio_1: 0,
+        precio_2: 0,
+        precio_3: 0,
+        precio_4: 0,
+        precio_5: 0,
+        principal: true
+      }],
       stock: [],
       stock_actual: "",
       estado: true,

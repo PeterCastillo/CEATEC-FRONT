@@ -52,15 +52,15 @@ export const EditarArticulo = ({
   unidades: IUnit[];
   handleUpdateArticle: (art: IArticle) => void;
   closeAlertTimeOut: () => void;
-  getGroupsList: () => void;
   setShowAlert: (alert: IAlert) => void;
   showAlert: IAlert;
-  getBrandsList: () => void;
   getBranchOfficesList: () => void;
   getWareHousesList: () => void;
   sucursales: IBranchOffice[]
   getUnitsList: () => void;
   segmentosList: ISegmentoCodigoSunat[]
+  getGroupsList: (handleCreateSetGrupo?: () => void) => void;
+  getBrandsList: (handleCreateSetMarca?: () => void) => void;
 }) => {
   const [stock, setStock] = useState<boolean>(false);
   const [precio, setPrecio] = useState<boolean>(false);

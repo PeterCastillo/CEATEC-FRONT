@@ -9,7 +9,6 @@ import {
 } from "@/interfaces/comercial/mantenimiento/articulo/articulosInterfaces";
 import { FormEvent, useEffect, useState } from "react";
 import { IUnit } from "@/interfaces/comercial/mantenimiento/grupo-familia-marca-unidad/unidadIntefaces";
-import { NuevaUnidad } from "./NuevaUnidad";
 import { IAlert } from "@/interfaces/componentsInterfaces";
 
 export const Precio = ({
@@ -544,15 +543,6 @@ export const Precio = ({
           </div>
         </div>
       </div>
-      <NuevaUnidad
-        closeAlertTimeOut={closeAlertTimeOut}
-        getUnitsList={getUnitsList}
-        modal={modalUnidad}
-        setModal={setModalUnidad}
-        setShowAlert={setShowAlert}
-        setShowLoader={setShowLoader}
-        showAlert={showAlert}
-      />
     </div>
   );
 };

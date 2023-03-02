@@ -1,6 +1,6 @@
 import { clsx } from "@/lib/clsx";
 import { FormEvent, FC, useState } from "react";
-import styles from "./NuevaUnidad.module.scss";
+import styles from "./NuevaSucursal.module.scss";
 import { MdClose } from "react-icons/md";
 import { FaPlus } from "react-icons/fa";
 import { IAlert } from "@/interfaces/componentsInterfaces";
@@ -8,40 +8,42 @@ import {
   getLocalStorageItem,
   getTokenFromLocalStorage,
 } from "@/utils/localStorageControl";
-import { INewUnit } from "@/interfaces/comercial/mantenimiento/grupo-familia-marca-unidad/unidadIntefaces";
-import { postUnidadService } from "@/services/comercial/mantenimiento/grupo-familia-marca-unidad/unidadServices";
+import { IBranchOffice, INewBranchOffice } from "@/interfaces/comercial/mantenimiento/empresa/sucursalInterfaces";
+import { postSucursalService } from "@/services/comercial/mantenimiento/empresa/sucursalService";
 
-interface INuevaUnidad {
+interface INuevaSucursal {
   modal: boolean;
   setModal: (state: boolean) => void;
   setShowLoader: (state: boolean) => void;
   showAlert: IAlert;
   setShowAlert: (alert: IAlert) => void;
   closeAlertTimeOut: () => void;
-  getUnitsList: () => void;
+  getBranchOfficesList: (handleCreateSetSucursal?: ()=> void) => void;
+  handleCreateSetSucursal: (sucursal:IBranchOffice) => void
 }
 
-export const NuevaUnidad: FC<INuevaUnidad> = ({
+export const NuevaSucursal: FC<INuevaSucursal> = ({
   setModal,
   modal,
   setShowLoader,
   showAlert,
   setShowAlert,
   closeAlertTimeOut,
-  getUnitsList,
+  getBranchOfficesList,
+  handleCreateSetSucursal
 }) => {
-  const [newUnidad, setNewUnidad] = useState<INewUnit>({
-    abreviatura: "",
+  const [newBranchOffice, setNewBranchOffice] = useState<INewBranchOffice>({
     descripcion: "",
+    ubicacion: "",
     empresa_id: getLocalStorageItem("empresa"),
-    valor: "",
   });
+
   const handleInputChange = (
     event: FormEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = event.currentTarget;
-    setNewUnidad({
-      ...newUnidad,
+    setNewBranchOffice({
+      ...newBranchOffice,
       [name]: value.toUpperCase(),
     });
   };
@@ -57,97 +59,87 @@ export const NuevaUnidad: FC<INuevaUnidad> = ({
     return closeAlertTimeOut();
   };
 
-  const handleCreateUnidad = async () => {
-    if (newUnidad.abreviatura.trim() === "") {
-      return errorValidateForm("abreviatura");
-    }
-    if (newUnidad.descripcion.trim() === "") {
+  const handleCreateBranchOffice = async () => {
+    if (newBranchOffice.descripcion.trim() === "") {
       return errorValidateForm("descripcion");
     }
-    if (newUnidad.valor.toString().trim() === "") {
-      return errorValidateForm("valor");
+    if (newBranchOffice.ubicacion.trim() === "") {
+      return errorValidateForm("ubicacion");
     }
-    const data = {
-      ...newUnidad,
-      valor: Number(newUnidad.valor.toString()),
-    };
-    setShowLoader(true);
-    const response = await postUnidadService(
-        data,
+    if (newBranchOffice.empresa_id.trim() === "") {
+      return errorValidateForm("empresa");
+    }
+    setShowLoader(true)
+    const response = await postSucursalService(
+      newBranchOffice,
       getTokenFromLocalStorage()
     );
-    setShowLoader(false);
+    setShowLoader(false)
     if (response) {
-      getUnitsList();
-      setNewUnidad({
-        abreviatura: "",
-        descripcion: "",
-        empresa_id: getLocalStorageItem("empresa"),
-        valor: "",
-      });;
-      setShowAlert({
-        ...showAlert,
-        icon: "success",
-        title: "Operación exitosa",
-        message: "Unidad creado correctamente",
-        show: true,
-      });
-      return closeAlertTimeOut();
+      if (response.status === 201) {
+        getBranchOfficesList(()=> handleCreateSetSucursal(response.json.data));
+        setNewBranchOffice({
+            descripcion: "",
+            ubicacion: "",
+            empresa_id: getLocalStorageItem("empresa"),
+          });;
+        setShowAlert({
+          ...showAlert,
+          icon: "success",
+          title: "Operación exitosa",
+          message: "La sucursal fue creada correctamente",
+          show: true,
+        });
+        return closeAlertTimeOut();
+      }
     }
     setShowAlert({
       ...showAlert,
       icon: "error",
       title: "Error inesperado",
-      message: "No se pudo realizar la operación, intente más tarde",
+      message: "No se pudo realizar la operación, intente mas tarde",
       show: true,
     });
     return closeAlertTimeOut();
   };
 
+
   return (
     <div className={clsx(styles.modal, !modal && styles.hidden)}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <span className={styles.title}>Crear Unidad</span>
+          <span className={styles.title}>Crear Sucursal</span>
           <button onClick={() => setModal(false)} className={styles.close}>
             <MdClose />
           </button>
         </div>
         <div className={styles.options}>
-          <button className={styles.add} onClick={handleCreateUnidad}>
+          <button className={styles.add} onClick={handleCreateBranchOffice}>
             <FaPlus /> Agregar
           </button>
         </div>
         <div className={styles.form}>
           <div className={styles.row}>
             <div className={clsx(styles.f_g, styles.f_2)}>
-              <label htmlFor="descripcion">Descripción</label>
+              <label htmlFor="descripcion">Descripcion</label>
               <input autoComplete="off"
                 id="descripcion"
                 name="descripcion"
                 type="text"
                 onChange={handleInputChange}
-                value={newUnidad.descripcion}
+                value={newBranchOffice.descripcion}
               />
             </div>
+          </div>
+          <div className={styles.row}>
             <div className={clsx(styles.f_g, styles.f_2)}>
-              <label htmlFor="abreviatura">Abreviatura</label>
+              <label htmlFor="ubicacion">Ubicación</label>
               <input autoComplete="off"
-                id="abreviatura"
-                name="abreviatura"
+                id="ubicacion"
+                name="ubicacion"
                 type="text"
                 onChange={handleInputChange}
-                value={newUnidad.abreviatura}
-              />
-            </div>
-            <div className={clsx(styles.f_g, styles.f_2)}>
-              <label htmlFor="valor">Valor</label>
-              <input autoComplete="off"
-                id="valor"
-                name="valor"
-                type="text"
-                onChange={handleInputChange}
-                value={newUnidad.valor}
+                value={newBranchOffice.ubicacion}
               />
             </div>
           </div>

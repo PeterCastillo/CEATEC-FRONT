@@ -3,7 +3,7 @@ import { useState } from "react";
 import styles from "./NuevoCliente.module.scss";
 import { MdClose } from "react-icons/md";
 import { NCPF } from "../../mantenimiento/cliente-proveedor/NuevoClienteProveedorForm";
-import { INewClientProvider } from "@/interfaces/comercial/mantenimiento/cliente-proveedor/proveedorClientInterfaces";
+import { IClientProvider, INewClientProvider } from "@/interfaces/comercial/mantenimiento/cliente-proveedor/proveedorClientInterfaces";
 import { FaPlus } from "react-icons/fa";
 import { ISector } from "@/interfaces/comercial/mantenimiento/empresa/sectorInterface";
 import { ITipoClienteProveedor } from "@/interfaces/comercial/mantenimiento/tipo-cliente-proveedor/tipoClientProvedorinterfaces";
@@ -24,8 +24,8 @@ export const NuevoCliente = ({
   setShowLoader,
   getProveedoresList,
   getSectorsList,
-  getZonesList
-
+  getZonesList,
+  handleCreateSetProveefdor
 }: {
   show: boolean;
   setShowNewClientModal: (data: boolean) => void;
@@ -36,9 +36,10 @@ export const NuevoCliente = ({
   showAlert: IAlert;
   setShowAlert: (alert: IAlert) => void;
   setShowLoader: (status: boolean) => void;
-  getProveedoresList: () => void;
+  getProveedoresList: (handleCreateSetProveefdor?: () => void) => void;
   getSectorsList: () => void
   getZonesList: () => void
+  handleCreateSetProveefdor: (proveedor: IClientProvider) => void
 }) => {
   const [newClientProvider, setNewClientProvider] =
     useState<INewClientProvider>({
@@ -137,7 +138,7 @@ export const NuevoCliente = ({
     setShowLoader(false);
     if (response) {
       if (response.status === 201) {
-        getProveedoresList();
+        getProveedoresList(()=> handleCreateSetProveefdor(response.json.data));
         setNewClientProvider({
           tipo_cliente_proveedor_id: "",
           clasificacion: "",

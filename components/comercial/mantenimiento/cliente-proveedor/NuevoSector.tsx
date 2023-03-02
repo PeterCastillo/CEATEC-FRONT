@@ -1,4 +1,4 @@
-import { INewSector } from "@/interfaces/comercial/mantenimiento/empresa/sectorInterface";
+import { INewSector, ISector } from "@/interfaces/comercial/mantenimiento/empresa/sectorInterface";
 import { clsx } from "@/lib/clsx";
 import { FormEvent, FC, useState } from "react";
 import styles from "./NuevoSector.module.scss";
@@ -15,7 +15,8 @@ interface INuevaSector {
   showAlert: IAlert;
   setShowAlert: (alert: IAlert) => void;
   closeAlertTimeOut: () => void;
-  getSectorsList: () => void
+  getSectorsList: (handleCreateSetSector?: () => void) => void
+  handleCreateSetSector: (sector: ISector) => void
 }
 
 export const NuevoSector: FC<INuevaSector> = ({
@@ -25,7 +26,8 @@ export const NuevoSector: FC<INuevaSector> = ({
   showAlert,
   setShowAlert,
   closeAlertTimeOut,
-  getSectorsList
+  getSectorsList,
+  handleCreateSetSector
 }) => {
   const [newSector, setNewSector] = useState<INewSector>({
     sector: "",
@@ -69,7 +71,7 @@ export const NuevoSector: FC<INuevaSector> = ({
     setShowLoader(false);
     if (response) {
       if (response.status === 201) {
-        getSectorsList();
+        getSectorsList(()=> handleCreateSetSector(response.json.data));
         setNewSector({
             descripcion: "",
             sector: "",

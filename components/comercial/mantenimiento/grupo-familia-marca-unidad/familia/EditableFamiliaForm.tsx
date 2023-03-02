@@ -77,6 +77,7 @@ export const EditableFamiliaForm: FC<IEditableFamiliaForm> = ({
     });
   };
   const handleCreateSetGroup = (grupo:IGroup) => {
+    setModalGrupo(false)
     setNewEditable({
       ...newEditable,
       grupo_id: grupo._id.$oid

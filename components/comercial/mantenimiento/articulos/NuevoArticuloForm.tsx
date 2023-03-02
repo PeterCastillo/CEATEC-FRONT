@@ -43,10 +43,10 @@ export const NAF = ({
   brandsList: IBrand[];
   stateArticlesList: IEstadoArticulo[];
   closeAlertTimeOut: () => void;
-  getGroupsList: () => void;
+  getGroupsList: (handleCreateSetGrupo?: () => void) => void;
   setShowAlert: (alert: IAlert) => void;
   showAlert: IAlert;
-  getBrandsList: () => void;
+  getBrandsList: (handleCreateSetMarca?: ()=> void) => void;
   articulosList: IArticle[];
   segmentosList: ISegmentoCodigoSunat[];
 }) => {
@@ -128,7 +128,7 @@ export const NAF = ({
     }
   };
 
-  const getFamilyList = async () => {
+  const getFamilyList = async (handleCreateSetFamilia = Function()) => {
     if (newArticle.grupo.id) {
       setShowLoader(true);
       const families = await getFamilysForGroupsService(
@@ -138,6 +138,7 @@ export const NAF = ({
       if (families) {
         if (families.status === 200) {
           setFamiliesListByGroup(families.json.data);
+          handleCreateSetFamilia()
         }
       }
       setShowLoader(false);
@@ -227,6 +228,40 @@ export const NAF = ({
       }
     }
   };
+  const handleCreateSetGrupo = (response:IGroup) => {
+    setModalGrupo(false)
+    setNewArticle({
+      ...newArticle,
+      grupo: {
+        id: response._id.$oid,
+        descripcion: response.descripcion
+      }
+    })
+  }
+  const handleCreateSetFamilia = (response:IFamily) => {
+    if(response.grupo_id != newArticle.grupo.id){
+      return
+    }
+    setModalFamilia(false)
+    setNewArticle({
+      ...newArticle,
+      familia: {
+        id: response._id.$oid,
+        descripcion: response.descripcion
+      }
+    })
+  }
+  const handleCreateSetMarca = (response:IBrand) => {
+    setModalMarca(false)
+    setNewArticle({
+      ...newArticle,
+      marca: {
+        id: response._id.$oid,
+        descripcion: response.descripcion
+      }
+    })
+  }
+
   return (
     <>
       <div className={styles.row}>
@@ -466,6 +501,7 @@ export const NAF = ({
         setShowAlert={setShowAlert}
         setShowLoader={setShowLoader}
         showAlert={showAlert}
+        handleCreateSetGrupo={handleCreateSetGrupo}
       />
       <NuevaFamilia
         modal={modalFamilia}
@@ -477,6 +513,7 @@ export const NAF = ({
         showAlert={showAlert}
         grupos={groupsList}
         getFamilyList={getFamilyList}
+        handleCreateSetFamilia={handleCreateSetFamilia}
       />
       <NuevaMarca
         modal={modalMarca}
@@ -486,6 +523,7 @@ export const NAF = ({
         setShowLoader={setShowLoader}
         showAlert={showAlert}
         getBrandsList={getBrandsList}
+        handleCreateSetMarca={handleCreateSetMarca}
       />
       <CodigoSunat
         closeAlertTimeOut={closeAlertTimeOut}

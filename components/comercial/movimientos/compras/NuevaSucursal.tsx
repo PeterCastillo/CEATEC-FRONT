@@ -8,7 +8,7 @@ import {
   getLocalStorageItem,
   getTokenFromLocalStorage,
 } from "@/utils/localStorageControl";
-import { INewBranchOffice } from "@/interfaces/comercial/mantenimiento/empresa/sucursalInterfaces";
+import { IBranchOffice, INewBranchOffice } from "@/interfaces/comercial/mantenimiento/empresa/sucursalInterfaces";
 import { postSucursalService } from "@/services/comercial/mantenimiento/empresa/sucursalService";
 
 interface INuevaSucursal {
@@ -18,7 +18,8 @@ interface INuevaSucursal {
   showAlert: IAlert;
   setShowAlert: (alert: IAlert) => void;
   closeAlertTimeOut: () => void;
-  getBranchOfficesList: () => void;
+  getBranchOfficesList: (handleCreateSetSucursal?: ()=> void) => void;
+  handleCreateSetSucursal: (sucursal:IBranchOffice) => void
 }
 
 export const NuevaSucursal: FC<INuevaSucursal> = ({
@@ -28,7 +29,8 @@ export const NuevaSucursal: FC<INuevaSucursal> = ({
   showAlert,
   setShowAlert,
   closeAlertTimeOut,
-  getBranchOfficesList
+  getBranchOfficesList,
+  handleCreateSetSucursal
 }) => {
   const [newBranchOffice, setNewBranchOffice] = useState<INewBranchOffice>({
     descripcion: "",
@@ -75,7 +77,7 @@ export const NuevaSucursal: FC<INuevaSucursal> = ({
     setShowLoader(false)
     if (response) {
       if (response.status === 201) {
-        getBranchOfficesList();
+        getBranchOfficesList(()=>handleCreateSetSucursal(response.json.data));
         setNewBranchOffice({
             descripcion: "",
             ubicacion: "",
